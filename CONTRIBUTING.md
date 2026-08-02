@@ -11,13 +11,15 @@ Ultimate Geography is maintained with [Brain Brew](https://github.com/jeprecated
 The source of truth is:
 
 - `deck.yaml` — the English standard Canonical Deck.
-- `note-types.yaml` — the shared UG note-type map.
+- `deck-hardcore.yaml` — the minimal Hardcore Geography companion shell; it contains deck identity but no ordinary UG notes.
+- `note-types.yaml` — the shared UG-compatible note-type map included by both deck shells.
 - `overlays/languages/*.yaml` — translation overlays.
 - `overlays/variants/extended*.yaml` and `overlays/variants/experimental*.yaml` — extended and experimental variant overlays.
 - `descriptions/` — deck description HTML fragments included from deck YAML and translation overlays.
 - `templates/ultimate-geography/` — card question/answer HTML fragments included from deck YAML and variant overlays.
-- `styles/ultimate-geography/card.css` — shared card styling.
-- `brainbrew.yaml` — the manifest defining all standard, extended, and experimental targets.
+- `styles/ultimate-geography/card.css` — shared card styling included by the UG and Hardcore deck shells.
+- `brainbrew.yaml` — the manifest defining standard, extended, experimental, and standalone Hardcore targets.
+- `brainbrew-hardcore.yaml` — the manifest defining companion/add-on Hardcore targets from the minimal shell and shared Hardcore overlays.
 - `media/` — the flat media root used by CrowdAnki exports.
 
 ### Getting started
@@ -35,15 +37,20 @@ List the available targets:
 
 ```bash
 brainbrew targets --manifest brainbrew.yaml
+brainbrew targets --manifest brainbrew-hardcore.yaml
 ```
 
 Verify the whole workspace. Native verification checks every composed target, including external HTML/CSS after `!include` resolution, media references and hashes, stale translation paths, and configured CrowdAnki goldens:
 
 ```bash
-brainbrew verify --manifest brainbrew.yaml --all-targets --media-root media
+python scripts/check-translation-profile.py
+python scripts/check-shared-note-types.py
+for manifest in brainbrew.yaml brainbrew-hardcore.yaml; do
+  brainbrew verify --manifest "$manifest" --all-targets --media-root media
+done
 ```
 
-HTML/CSS, translation paths, structured media, and committed goldens are validated by Brain Brew itself.
+The small Python guards protect the two canonical translation-profile copies from drifting and ensure both deck shells keep shared note-type structure in `note-types.yaml`. Alpha.4 does not support a mapping-valued `!include` for the translation profile. HTML/CSS validation is part of Brain Brew itself.
 
 Export one target with media:
 
@@ -61,20 +68,22 @@ The exporter copies exactly the media declared by the resolved target into its o
 Export every configured target for a release or CI smoke test:
 
 ```bash
-brainbrew targets --manifest brainbrew.yaml | while read -r target; do
-  out="build/crowdanki/$target"
-  brainbrew export crowdanki \
-    --manifest brainbrew.yaml \
-    --target "$target" \
-    --out "$out" \
-    --media-root media \
-    --force
+for manifest in brainbrew.yaml brainbrew-hardcore.yaml; do
+  brainbrew targets --manifest "$manifest" | while read -r target; do
+    out="build/crowdanki/$target"
+    brainbrew export crowdanki \
+      --manifest "$manifest" \
+      --target "$target" \
+      --out "$out" \
+      --media-root media \
+      --force
+  done
 done
 ```
 
 The full `verify` command above validates that every target composes, every media reference is declared, every declaration's SHA-256 matches the source byte under `media/`, stale translation keys are rejected, and all configured parsed-JSON goldens match.
 
-Six representative targets have committed CrowdAnki `deck.json` goldens under `goldens/`: English/German/Hebrew/Chinese standard plus English Extended and Experimental. To accept an intentional output change, export that target directly into its golden directory, remove the copied media, inspect the parsed JSON diff, and verify again:
+Eight representative targets have committed CrowdAnki `deck.json` goldens under `goldens/`: English/German/Hebrew/Chinese standard, English Extended/Experimental, German standalone Hardcore, and German companion Hardcore. To accept an intentional output change, export that target directly into its golden directory, remove the copied media, inspect the parsed JSON diff, and verify again:
 
 ```bash
 target=en-standard
@@ -87,7 +96,7 @@ rm -rf "goldens/$target/media"
 brainbrew verify --manifest "$manifest" --target "$target" --media-root media
 ```
 
-See `docs/brainbrew-migration-evidence.md` and run `python scripts/update-ug-goldens.py` to regenerate and verify the representative output set.
+See `docs/brainbrew-migration-evidence.md` for the pinned UG baseline and representative output matrix. Run `python scripts/update-ug-goldens.py` to regenerate and verify the six UG goldens; the two Hardcore goldens are regenerated with the corresponding manifest targets.
 
 Compose one target to inspect the resolved Canonical Deck YAML:
 
@@ -101,15 +110,19 @@ brainbrew compose \
 ### Common edits
 
 - **Edit English content:** update the relevant note in `deck.yaml`.
-- **Edit a translation:** use the `brainbrew translations` workflow below, then update the language overlay under `overlays/languages/`.
-- **Edit deck descriptions:** update the relevant HTML fragment under `descriptions/ultimate-geography/`; the YAML files reference those fragments with `!include`.
+- **Edit a translation:** use the `brainbrew translations` workflow below, then update the language overlay under `overlays/languages/` or the relevant Hardcore translation overlay.
+- **Edit deck descriptions:** update the relevant HTML fragment under `descriptions/ultimate-geography/` or `descriptions/hardcore-geography/`; the YAML files reference those fragments with `!include`.
 - **Edit standard card templates:** update the question/answer HTML fragments under `templates/ultimate-geography/<template-name>/`.
-- **Edit card styling:** update `styles/ultimate-geography/card.css`.
+- **Edit card styling:** update `styles/ultimate-geography/card.css`; both the normal UG deck shell and the Hardcore companion shell include this file.
 - **Edit extended or experimental templates:** update the shared overlay YAML in `overlays/variants/extended.yaml` or `overlays/variants/experimental.yaml`, and put larger HTML changes in the included files under `templates/ultimate-geography/`; language-specific files under those directories should stay limited to adapter identity or true language exceptions.
-- **Replace or add media:** put the file directly in `media/`, add or update its stable media id/path in `media.yaml` (or the owning Experimental overlay), reference that id from note fields with `!image media.<id>`, and keep `sources.csv` up to date. Refresh declaration hashes from the real bytes before verification:
+- **Edit Hardcore Geography content:** update the shared Hardcore overlays under `overlays/extensions/hardcore/`; standalone Hardcore targets and companion/add-on targets reuse the same note definitions. Localized standalone targets apply the corresponding `companion-translations/<lang>.yaml` after adding Hardcore notes, so keep those content translations shared with companion exports.
+- **Edit Hardcore Geography fills:** put language-neutral/default blank-field fills in `overlays/extensions/hardcore/field-fills.yaml`; use `overlays/extensions/hardcore/field-fills/<lang>.yaml` only for localized overrides that differ from the default.
+- **Replace or add media:** put the file directly in `media/`, add or update its stable media id/path in `media.yaml` (or the owning Experimental/Hardcore overlay), reference that id from note fields with `!image media.<id>`, and keep `sources.csv` up to date. Refresh declaration hashes from the real bytes before verification:
 
 ```bash
-brainbrew media hash --manifest brainbrew.yaml --all-targets --media-root media
+for manifest in brainbrew.yaml brainbrew-hardcore.yaml; do
+  brainbrew media hash --manifest "$manifest" --all-targets --media-root media
+done
 ```
 
 After any edit, run the full `verify` command above. If you change generated deck output intentionally, inspect an exported target before opening a pull request.
@@ -159,6 +172,8 @@ field.flag-similarity:
 
 `ref` variables reuse another note field's translation, usually a country name. `text` variables are the small qualifier fragments translators edit, such as `wider, coat of arms with eagle`. If a language needs different glue or ordering, translate the message `format` or use a contextual message-variable translation instead of reintroducing one long `Moldova (...)` key. CrowdAnki exports still receive a plain resolved string such as `Moldavsko (širší, erb s orlem)`.
 
+The standalone Hardcore overlay uses the same message shape, but its Galápagos/Sierra Leone field uses `text: Sierra Leone` because `deck-hardcore.yaml` is a minimal shell and does not contain the full UG Sierra Leone note to reference. The main UG deck uses `ref` wherever the referenced country note exists.
+
 ### Translation workflow
 
 Report mode is safe and does not edit files:
@@ -166,6 +181,7 @@ Report mode is safe and does not edit files:
 ```bash
 brainbrew translations --manifest brainbrew.yaml --target de-standard
 brainbrew translations --manifest brainbrew.yaml --all-targets --summary
+brainbrew translations --manifest brainbrew-hardcore.yaml --all-targets --summary
 ```
 
 Use context mode when reviewing or editing translations. It shows source text, target text, note id, field id/name, card templates, duplicate-source groups, and structured-message components:
@@ -192,13 +208,13 @@ brainbrew workbench serve --manifest brainbrew.yaml --port 0 --no-open --enable-
 
 This launches a local `127.0.0.1` server with embedded browser assets. Every server starts read-only unless `--enable-write` is supplied; the flag explicitly opts that local process into write mode. Browser-local drafts remain unapplied until you review and confirm Apply. Only then can Brain Brew update the canonical YAML and owned translation overlays through its validated workspace transaction. Write mode is visibly marked because additional hardening remains incomplete, so keep the repository under version control and do not use it on irreplaceable state. Omit `--enable-write` whenever you only want to browse, compare languages and targets, or preview cards.
 
-UG keeps translation coverage lenient for now because several language targets intentionally have missing/raw fallback text while translation work continues. `brainbrew verify` still rejects stale keys, invalid target additions, broken contextual paths, and media/reference errors. For a fully completed release target, maintainers can opt into strict checks with target metadata or a one-off command:
+UG keeps translation coverage lenient for now because several language and Hardcore targets intentionally have missing/raw fallback text while translation work continues. `brainbrew verify` still rejects stale keys, invalid target additions, broken contextual paths, and media/reference errors. For a fully completed release target, maintainers can opt into strict checks with target metadata or a one-off command:
 
 ```bash
 brainbrew verify --manifest brainbrew.yaml --target de-standard --translation-coverage strict --media-root media
 ```
 
-The new workflow gives maintainers stronger checks than the legacy recipe pipeline: duplicate-source summaries help translators choose between direct and contextual translations, structured messages make flag-similarity fragments reusable, and `verify --all-targets` proves every standard, extended, and experimental target still composes.
+The new workflow gives maintainers stronger checks than the legacy recipe pipeline: duplicate-source summaries help translators choose between direct and contextual translations, structured messages make flag-similarity fragments reusable, `field_fills` isolates Hardcore-specific blank-field content, and `verify --all-targets` proves every standard, extended, experimental, standalone Hardcore, and Hardcore companion target still composes.
 
 ## Content inclusion rules
 
