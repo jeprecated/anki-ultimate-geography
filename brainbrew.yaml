@@ -3,25 +3,89 @@ package:
   version: 0.1.0
 base: deck.yaml
 overlays:
+  overlay.translation.de:
+    file: overlays/languages/de.yaml
+    kind: translation
+    depends_on:
+      - overlay.translation.note-type.de
+  overlay.translation.he:
+    file: overlays/languages/he.yaml
+    kind: translation
+  overlay.translation.note-type.de:
+    file: overlays/languages/note-types/de.yaml
+    kind: translation
+  overlay.translation.note-type.zh:
+    file: overlays/languages/note-types/zh.yaml
+    kind: translation
+  overlay.translation.zh:
+    file: overlays/languages/zh.yaml
+    kind: translation
+    depends_on:
+      - overlay.translation.note-type.zh
   overlay.variant.experimental:
     file: overlays/variants/experimental.yaml
     kind: extension
     depends_on:
       - overlay.variant.extended
+  overlay.variant.experimental.de:
+    file: overlays/variants/experimental/de.yaml
+    kind: extension
+    depends_on:
+      - overlay.translation.de
+      - overlay.variant.experimental
   overlay.variant.experimental.en:
     file: overlays/variants/experimental/en.yaml
     kind: extension
     depends_on:
       - overlay.variant.experimental
+  overlay.variant.experimental.he:
+    file: overlays/variants/experimental/he.yaml
+    kind: extension
+    depends_on:
+      - overlay.translation.he
+      - overlay.variant.experimental
+  overlay.variant.experimental.zh:
+    file: overlays/variants/experimental/zh.yaml
+    kind: extension
+    depends_on:
+      - overlay.translation.zh
+      - overlay.variant.experimental
   overlay.variant.extended:
     file: overlays/variants/extended.yaml
     kind: extension
+  overlay.variant.extended.de:
+    file: overlays/variants/extended/de.yaml
+    kind: extension
+    depends_on:
+      - overlay.translation.de
+      - overlay.variant.extended
   overlay.variant.extended.en:
     file: overlays/variants/extended/en.yaml
     kind: extension
     depends_on:
       - overlay.variant.extended
+  overlay.variant.extended.he:
+    file: overlays/variants/extended/he.yaml
+    kind: extension
+    depends_on:
+      - overlay.translation.he
+      - overlay.variant.extended
+  overlay.variant.extended.zh:
+    file: overlays/variants/extended/zh.yaml
+    kind: extension
+    depends_on:
+      - overlay.translation.zh
+      - overlay.variant.extended
 targets:
+  de-experimental:
+    overlays:
+      - overlay.variant.experimental.de
+  de-extended:
+    overlays:
+      - overlay.variant.extended.de
+  de-standard:
+    overlays:
+      - overlay.translation.de
   en-experimental:
     overlays:
       - overlay.variant.experimental.en
@@ -30,7 +94,34 @@ targets:
       - overlay.variant.extended.en
   en-standard:
     overlays: []
+  he-experimental:
+    overlays:
+      - overlay.variant.experimental.he
+  he-extended:
+    overlays:
+      - overlay.variant.extended.he
+  he-standard:
+    overlays:
+      - overlay.translation.he
+  zh-experimental:
+    overlays:
+      - overlay.variant.experimental.zh
+  zh-extended:
+    overlays:
+      - overlay.variant.extended.zh
+  zh-standard:
+    overlays:
+      - overlay.translation.zh
 languages:
+  de:
+    display_name: German
+    translation_overlays:
+      base: overlay.translation.de
+    primary_target: standard
+    targets:
+      experimental: de-experimental
+      extended: de-extended
+      standard: de-standard
   en:
     display_name: English
     source: true
@@ -39,3 +130,89 @@ languages:
       experimental: en-experimental
       extended: en-extended
       standard: en-standard
+  he:
+    display_name: Hebrew
+    translation_overlays:
+      base: overlay.translation.he
+    primary_target: standard
+    targets:
+      experimental: he-experimental
+      extended: he-extended
+      standard: he-standard
+  zh:
+    display_name: 'Chinese (Simplified)'
+    translation_overlays:
+      base: overlay.translation.zh
+    primary_target: standard
+    targets:
+      experimental: zh-experimental
+      extended: zh-extended
+      standard: zh-standard
+translation_profile:
+  structural_fields:
+    - field.flag
+    - field.map
+  metadata_categories:
+    - key: deck-variable
+      label: Deck variables
+      paths:
+        - 'deck.variables.*'
+    - key: deck-metadata
+      label: Deck metadata
+      paths:
+        - deck.name
+        - deck.description
+    - key: note-type-name
+      label: Note type names
+      paths:
+        - 'note_types.*.name'
+    - key: field-label
+      label: Field labels
+      paths:
+        - 'note_types.*.fields.*.name'
+    - key: card-template-name
+      label: Card template names
+      paths:
+        - 'note_types.*.card_templates.*.name'
+    - key: card-template-variable
+      label: Card template variables
+      paths:
+        - 'note_types.*.card_templates.*.variables.*'
+    - key: variable
+      label: Variables
+      paths:
+        - 'note_types.*.variables.*'
+        - 'notes.*.variables.*'
+    - key: list-message-pattern-glue
+      label: List-message pattern glue
+      paths:
+        - 'note_types.*.fields.*.message_pattern.item_format'
+        - 'note_types.*.fields.*.message_pattern.separator'
+    - key: tag
+      label: Tags
+      paths:
+        - 'notes.*.tags.*'
+    - key: stale-translation
+      label: Stale translations
+      paths:
+        - 'stale_translations.*'
+  metadata_paths:
+    - 'deck.*'
+    - 'note_types.*'
+    - 'notes.*.tags.*'
+  metadata_exclude_paths:
+    - 'deck.adapter_ids.*'
+    - 'note_types.*.adapter_ids.*'
+    - 'note_types.*.card_templates.*.adapter_ids.*'
+    - 'notes.*.adapter_ids.*'
+  metadata_category_order:
+    - deck-metadata
+    - deck-variable
+    - note-type-name
+    - field-label
+    - card-template-name
+    - variable
+    - card-template-variable
+    - list-message-pattern-glue
+    - tag
+    - stale-translation
