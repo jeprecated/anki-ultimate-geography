@@ -334,14 +334,30 @@ targets:
   de-standard:
     overlays:
       - overlay.translation.de
+    exports:
+      crowdanki:
+        out: build/crowdanki/de-standard
+        golden: goldens/de-standard/deck.json
   en-experimental:
     overlays:
       - overlay.variant.experimental.en
+    exports:
+      crowdanki:
+        out: build/crowdanki/en-experimental
+        golden: goldens/en-experimental/deck.json
   en-extended:
     overlays:
       - overlay.variant.extended.en
+    exports:
+      crowdanki:
+        out: build/crowdanki/en-extended
+        golden: goldens/en-extended/deck.json
   en-standard:
     overlays: []
+    exports:
+      crowdanki:
+        out: build/crowdanki/en-standard
+        golden: goldens/en-standard/deck.json
   es-experimental:
     overlays:
       - overlay.variant.experimental.es
@@ -369,6 +385,10 @@ targets:
   he-standard:
     overlays:
       - overlay.translation.he
+    exports:
+      crowdanki:
+        out: build/crowdanki/he-standard
+        golden: goldens/he-standard/deck.json
   it-experimental:
     overlays:
       - overlay.variant.experimental.it
@@ -441,6 +461,10 @@ targets:
   zh-standard:
     overlays:
       - overlay.translation.zh
+    exports:
+      crowdanki:
+        out: build/crowdanki/zh-standard
+        golden: goldens/zh-standard/deck.json
   zh-tw-experimental:
     overlays:
       - overlay.variant.experimental.zh-tw
