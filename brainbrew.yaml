@@ -1,0 +1,15 @@
+package:
+  id: anki-geo.ultimate-geography
+  version: 0.1.0
+base: deck.yaml
+overlays: {}
+targets:
+  en-standard:
+    overlays: []
+languages:
+  en:
+    display_name: English
+    source: true
+    primary_target: standard
+    targets:
+      standard: en-standard
