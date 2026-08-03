@@ -28,7 +28,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       BRAINBREW_VERSION: 1.0.0-alpha.4
-      EXPECTED_TARGETS: '12'
+      EXPECTED_TARGETS: '48'
     steps:
       - uses: actions/checkout@v4
       - name: Install Nix
