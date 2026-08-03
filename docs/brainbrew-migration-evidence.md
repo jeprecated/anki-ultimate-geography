@@ -29,3 +29,7 @@ python scripts/update-ug-goldens.py
 During the coexistence layers, CI materializes `build/migration-media` by flattening the legacy `src/media/{flags,maps,experimental_assets}` directories without changing tracked files. After cutover, verification uses the tracked flat `media/` directory directly.
 
 Intentional migration changes are limited to source representation and the already-reviewed corrections recorded in the stacked PRs. Gibraltar and Gulf of Oman are current-upstream additions rather than migration deltas.
+
+## Optional Hardcore layer
+
+The top stack layer adds 26 integrated Hardcore targets and 26 companion targets, bringing native verification to 100 targets. `de-hardcore-standard` and `de-hardcore-companion-standard` add two goldens, and the repository checks enforce shared note-type ownership plus translation-profile consistency. Because this is the final layer, the 48-target UG migration remains independently mergeable.
