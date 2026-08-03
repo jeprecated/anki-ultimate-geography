@@ -2,8 +2,32 @@ package:
   id: anki-geo.ultimate-geography
   version: 0.1.0
 base: deck.yaml
-overlays: {}
+overlays:
+  overlay.variant.experimental:
+    file: overlays/variants/experimental.yaml
+    kind: extension
+    depends_on:
+      - overlay.variant.extended
+  overlay.variant.experimental.en:
+    file: overlays/variants/experimental/en.yaml
+    kind: extension
+    depends_on:
+      - overlay.variant.experimental
+  overlay.variant.extended:
+    file: overlays/variants/extended.yaml
+    kind: extension
+  overlay.variant.extended.en:
+    file: overlays/variants/extended/en.yaml
+    kind: extension
+    depends_on:
+      - overlay.variant.extended
 targets:
+  en-experimental:
+    overlays:
+      - overlay.variant.experimental.en
+  en-extended:
+    overlays:
+      - overlay.variant.extended.en
   en-standard:
     overlays: []
 languages:
@@ -12,4 +36,6 @@ languages:
     source: true
     primary_target: standard
     targets:
+      experimental: en-experimental
+      extended: en-extended
       standard: en-standard
