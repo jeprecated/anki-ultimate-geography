@@ -37,10 +37,41 @@ overlays:
     file: translation-zh.yaml
   overlay.translation.zh-tw:
     file: translation-zh-tw.yaml
+  overlay.variant.experimental.cs:
+    file: overlays/variants/experimental/cs.yaml
+  overlay.variant.experimental.da:
+    file: overlays/variants/experimental/da.yaml
   overlay.variant.experimental.de:
     file: overlays/variants/experimental/de.yaml
   overlay.variant.experimental.en:
     file: overlays/variants/experimental/en.yaml
+  overlay.variant.experimental.es:
+    file: overlays/variants/experimental/es.yaml
+  overlay.variant.experimental.fr:
+    file: overlays/variants/experimental/fr.yaml
+  overlay.variant.experimental.he:
+    file: overlays/variants/experimental/he.yaml
+  overlay.variant.experimental.it:
+    file: overlays/variants/experimental/it.yaml
+  overlay.variant.experimental.nb:
+    file: overlays/variants/experimental/nb.yaml
+  overlay.variant.experimental.nl:
+    file: overlays/variants/experimental/nl.yaml
+  overlay.variant.experimental.pl:
+    file: overlays/variants/experimental/pl.yaml
+  overlay.variant.experimental.pt:
+    file: overlays/variants/experimental/pt.yaml
+  overlay.variant.experimental.ru:
+    file: overlays/variants/experimental/ru.yaml
+  overlay.variant.experimental.sv:
+    file: overlays/variants/experimental/sv.yaml
+    depends_on:
+      - overlay.translation.sv
+      - overlay.extension.experimental
+  overlay.variant.experimental.zh:
+    file: overlays/variants/experimental/zh.yaml
+  overlay.variant.experimental.zh-tw:
+    file: overlays/variants/experimental/zh-tw.yaml
   overlay.variant.extended.cs:
     file: overlays/variants/extended/cs.yaml
   overlay.variant.extended.da:
@@ -77,6 +108,14 @@ overlays:
   overlay.variant.extended.zh-tw:
     file: overlays/variants/extended/zh-tw.yaml
 targets:
+  cs-experimental:
+    extends: cs-standard
+    overlays:
+      - overlay.extension.experimental
+      - overlay.variant.experimental.cs
+    exports:
+      crowdanki:
+        out: build/brainbrew/crowdanki/cs-experimental
   cs-extended:
     extends: cs-standard
     overlays:
@@ -92,6 +131,14 @@ targets:
     exports:
       crowdanki:
         out: build/brainbrew/crowdanki/cs-standard
+  da-experimental:
+    extends: da-standard
+    overlays:
+      - overlay.extension.experimental
+      - overlay.variant.experimental.da
+    exports:
+      crowdanki:
+        out: build/brainbrew/crowdanki/da-experimental
   da-extended:
     extends: da-standard
     overlays:
@@ -151,6 +198,14 @@ targets:
     exports:
       crowdanki:
         out: build/brainbrew/crowdanki/en-standard
+  es-experimental:
+    extends: es-standard
+    overlays:
+      - overlay.extension.experimental
+      - overlay.variant.experimental.es
+    exports:
+      crowdanki:
+        out: build/brainbrew/crowdanki/es-experimental
   es-extended:
     extends: es-standard
     overlays:
@@ -166,6 +221,14 @@ targets:
     exports:
       crowdanki:
         out: build/brainbrew/crowdanki/es-standard
+  fr-experimental:
+    extends: fr-standard
+    overlays:
+      - overlay.extension.experimental
+      - overlay.variant.experimental.fr
+    exports:
+      crowdanki:
+        out: build/brainbrew/crowdanki/fr-experimental
   fr-extended:
     extends: fr-standard
     overlays:
@@ -181,6 +244,14 @@ targets:
     exports:
       crowdanki:
         out: build/brainbrew/crowdanki/fr-standard
+  he-experimental:
+    extends: he-standard
+    overlays:
+      - overlay.extension.experimental
+      - overlay.variant.experimental.he
+    exports:
+      crowdanki:
+        out: build/brainbrew/crowdanki/he-experimental
   he-extended:
     extends: he-standard
     overlays:
@@ -196,6 +267,14 @@ targets:
     exports:
       crowdanki:
         out: build/brainbrew/crowdanki/he-standard
+  it-experimental:
+    extends: it-standard
+    overlays:
+      - overlay.extension.experimental
+      - overlay.variant.experimental.it
+    exports:
+      crowdanki:
+        out: build/brainbrew/crowdanki/it-experimental
   it-extended:
     extends: it-standard
     overlays:
@@ -211,6 +290,14 @@ targets:
     exports:
       crowdanki:
         out: build/brainbrew/crowdanki/it-standard
+  nb-experimental:
+    extends: nb-standard
+    overlays:
+      - overlay.extension.experimental
+      - overlay.variant.experimental.nb
+    exports:
+      crowdanki:
+        out: build/brainbrew/crowdanki/nb-experimental
   nb-extended:
     extends: nb-standard
     overlays:
@@ -226,6 +313,14 @@ targets:
     exports:
       crowdanki:
         out: build/brainbrew/crowdanki/nb-standard
+  nl-experimental:
+    extends: nl-standard
+    overlays:
+      - overlay.extension.experimental
+      - overlay.variant.experimental.nl
+    exports:
+      crowdanki:
+        out: build/brainbrew/crowdanki/nl-experimental
   nl-extended:
     extends: nl-standard
     overlays:
@@ -241,6 +336,14 @@ targets:
     exports:
       crowdanki:
         out: build/brainbrew/crowdanki/nl-standard
+  pl-experimental:
+    extends: pl-standard
+    overlays:
+      - overlay.extension.experimental
+      - overlay.variant.experimental.pl
+    exports:
+      crowdanki:
+        out: build/brainbrew/crowdanki/pl-experimental
   pl-extended:
     extends: pl-standard
     overlays:
@@ -256,6 +359,14 @@ targets:
     exports:
       crowdanki:
         out: build/brainbrew/crowdanki/pl-standard
+  pt-experimental:
+    extends: pt-standard
+    overlays:
+      - overlay.extension.experimental
+      - overlay.variant.experimental.pt
+    exports:
+      crowdanki:
+        out: build/brainbrew/crowdanki/pt-experimental
   pt-extended:
     extends: pt-standard
     overlays:
@@ -271,6 +382,14 @@ targets:
     exports:
       crowdanki:
         out: build/brainbrew/crowdanki/pt-standard
+  ru-experimental:
+    extends: ru-standard
+    overlays:
+      - overlay.extension.experimental
+      - overlay.variant.experimental.ru
+    exports:
+      crowdanki:
+        out: build/brainbrew/crowdanki/ru-experimental
   ru-extended:
     extends: ru-standard
     overlays:
@@ -286,6 +405,14 @@ targets:
     exports:
       crowdanki:
         out: build/brainbrew/crowdanki/ru-standard
+  sv-experimental:
+    extends: sv-standard
+    overlays:
+      - overlay.extension.experimental
+      - overlay.variant.experimental.sv
+    exports:
+      crowdanki:
+        out: build/brainbrew/crowdanki/sv-experimental
   sv-extended:
     extends: sv-standard
     overlays:
@@ -301,6 +428,14 @@ targets:
     exports:
       crowdanki:
         out: build/brainbrew/crowdanki/sv-standard
+  zh-experimental:
+    extends: zh-standard
+    overlays:
+      - overlay.extension.experimental
+      - overlay.variant.experimental.zh
+    exports:
+      crowdanki:
+        out: build/brainbrew/crowdanki/zh-experimental
   zh-extended:
     extends: zh-standard
     overlays:
@@ -316,6 +451,14 @@ targets:
     exports:
       crowdanki:
         out: build/brainbrew/crowdanki/zh-standard
+  zh-tw-experimental:
+    extends: zh-tw-standard
+    overlays:
+      - overlay.extension.experimental
+      - overlay.variant.experimental.zh-tw
+    exports:
+      crowdanki:
+        out: build/brainbrew/crowdanki/zh-tw-experimental
   zh-tw-extended:
     extends: zh-tw-standard
     overlays:
@@ -338,6 +481,7 @@ languages:
       base: overlay.translation.cs
     primary_target: standard
     targets:
+      experimental: cs-experimental
       extended: cs-extended
       standard: cs-standard
   da:
@@ -346,6 +490,7 @@ languages:
       base: overlay.translation.da
     primary_target: standard
     targets:
+      experimental: da-experimental
       extended: da-extended
       standard: da-standard
   de:
@@ -371,6 +516,7 @@ languages:
       base: overlay.translation.es
     primary_target: standard
     targets:
+      experimental: es-experimental
       extended: es-extended
       standard: es-standard
   fr:
@@ -379,6 +525,7 @@ languages:
       base: overlay.translation.fr
     primary_target: standard
     targets:
+      experimental: fr-experimental
       extended: fr-extended
       standard: fr-standard
   he:
@@ -387,6 +534,7 @@ languages:
       base: overlay.translation.he
     primary_target: standard
     targets:
+      experimental: he-experimental
       extended: he-extended
       standard: he-standard
   it:
@@ -395,6 +543,7 @@ languages:
       base: overlay.translation.it
     primary_target: standard
     targets:
+      experimental: it-experimental
       extended: it-extended
       standard: it-standard
   nb:
@@ -403,6 +552,7 @@ languages:
       base: overlay.translation.nb
     primary_target: standard
     targets:
+      experimental: nb-experimental
       extended: nb-extended
       standard: nb-standard
   nl:
@@ -411,6 +561,7 @@ languages:
       base: overlay.translation.nl
     primary_target: standard
     targets:
+      experimental: nl-experimental
       extended: nl-extended
       standard: nl-standard
   pl:
@@ -419,6 +570,7 @@ languages:
       base: overlay.translation.pl
     primary_target: standard
     targets:
+      experimental: pl-experimental
       extended: pl-extended
       standard: pl-standard
   pt:
@@ -427,6 +579,7 @@ languages:
       base: overlay.translation.pt
     primary_target: standard
     targets:
+      experimental: pt-experimental
       extended: pt-extended
       standard: pt-standard
   ru:
@@ -435,6 +588,7 @@ languages:
       base: overlay.translation.ru
     primary_target: standard
     targets:
+      experimental: ru-experimental
       extended: ru-extended
       standard: ru-standard
   sv:
@@ -443,6 +597,7 @@ languages:
       base: overlay.translation.sv
     primary_target: standard
     targets:
+      experimental: sv-experimental
       extended: sv-extended
       standard: sv-standard
   zh:
@@ -451,6 +606,7 @@ languages:
       base: overlay.translation.zh
     primary_target: standard
     targets:
+      experimental: zh-experimental
       extended: zh-extended
       standard: zh-standard
   zh-tw:
@@ -459,6 +615,7 @@ languages:
       base: overlay.translation.zh-tw
     primary_target: standard
     targets:
+      experimental: zh-tw-experimental
       extended: zh-tw-extended
       standard: zh-tw-standard
 translation_profile:
