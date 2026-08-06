@@ -5,12 +5,16 @@ base: deck.yaml
 overlays:
   overlay.extension.experimental:
     file: experimental.yaml
+  overlay.extension.extended:
+    file: extended.yaml
   overlay.translation.de:
     file: translation-de.yaml
   overlay.variant.experimental.de:
     file: overlays/variants/experimental/de.yaml
   overlay.variant.experimental.en:
     file: overlays/variants/experimental/en.yaml
+  overlay.variant.extended.en:
+    file: overlays/variants/extended/en.yaml
 targets:
   de-experimental:
     extends: de-standard
@@ -35,6 +39,14 @@ targets:
     exports:
       crowdanki:
         out: build/brainbrew/crowdanki/en-experimental
+  en-extended:
+    extends: en-standard
+    overlays:
+      - overlay.extension.extended
+      - overlay.variant.extended.en
+    exports:
+      crowdanki:
+        out: build/brainbrew/crowdanki/en-extended
   en-standard:
     overlays: []
     exports:
@@ -55,6 +67,7 @@ languages:
     primary_target: standard
     targets:
       experimental: en-experimental
+      extended: en-extended
       standard: en-standard
 translation_profile:
   structural_fields:

@@ -18,22 +18,23 @@ jobs:
         run: |
           pipenv run build
           pipenv run build_experimental
-      - name: Preserve pilot oracles
+      - name: Preserve adopted-target oracles
         run: |
-          mkdir -p build/legacy-pilot
+          mkdir -p build/legacy-adopted
           cp -a \
             'build/Ultimate Geography [EN]' \
             'build/Ultimate Geography [DE]' \
             'build/Ultimate Geography [EN] [Experimental]' \
             'build/Ultimate Geography [DE] [Experimental]' \
-            build/legacy-pilot/
+            'build/Ultimate Geography [EN] [Extended]' \
+            build/legacy-adopted/
       - uses: actions/upload-artifact@v4
         with:
-          name: legacy-pilot
-          path: build/legacy-pilot
+          name: legacy-adopted
+          path: build/legacy-adopted
           if-no-files-found: error
 
-  rust-pilot-shadow:
+  rust-shadow:
     needs: legacy
     runs-on: ubuntu-latest
     steps:
@@ -54,9 +55,9 @@ jobs:
           test "$(brainbrew --version)" = 'brainbrew 1.0.0-alpha.8'
       - uses: actions/download-artifact@v4
         with:
-          name: legacy-pilot
-          path: build/legacy-pilot
-      - name: Validate four-target pilot
+          name: legacy-adopted
+          path: build/legacy-adopted
+      - name: Validate adopted Rust targets
         run: |
           export PYTHONDONTWRITEBYTECODE=1
           python -m unittest -v \
@@ -67,7 +68,7 @@ jobs:
           python migration/brainbrew/stage_media.py stage
           python migration/brainbrew/stage_media.py check
 
-          files='brainbrew.yaml deck.yaml note-types.yaml media.yaml experimental.yaml translation-de.yaml overlays/variants/experimental/de.yaml overlays/variants/experimental/en.yaml'
+          files='brainbrew.yaml deck.yaml note-types.yaml media.yaml experimental.yaml extended.yaml translation-de.yaml overlays/variants/experimental/de.yaml overlays/variants/experimental/en.yaml overlays/variants/extended/en.yaml'
           sha256sum $files > /tmp/brainbrew-yaml.sha256
           for file in $files; do brainbrew fmt "$file"; done
           sha256sum --check /tmp/brainbrew-yaml.sha256
@@ -78,12 +79,12 @@ jobs:
           from pathlib import Path
           targets = json.loads(Path('build/brainbrew-targets.json').read_text())['targets']
           assert [target['name'] for target in targets] == [
-              'de-experimental', 'de-standard', 'en-experimental', 'en-standard'
+              'de-experimental', 'de-standard', 'en-experimental', 'en-extended', 'en-standard'
           ], targets
           PY
 
           mkdir -p build/brainbrew
-          for target in de-experimental de-standard en-experimental en-standard; do
+          for target in de-experimental de-standard en-experimental en-extended en-standard; do
             brainbrew validate --manifest brainbrew.yaml --target "$target"
             brainbrew compose --manifest brainbrew.yaml --target "$target" \
               --out "build/brainbrew/$target.yaml"
@@ -100,9 +101,10 @@ jobs:
               de-experimental) legacy='Ultimate Geography [DE] [Experimental]' ;;
               de-standard) legacy='Ultimate Geography [DE]' ;;
               en-experimental) legacy='Ultimate Geography [EN] [Experimental]' ;;
+              en-extended) legacy='Ultimate Geography [EN] [Extended]' ;;
               en-standard) legacy='Ultimate Geography [EN]' ;;
             esac
             python migration/brainbrew/compare_crowdanki.py \
-              "build/legacy-pilot/$legacy" \
+              "build/legacy-adopted/$legacy" \
               "build/brainbrew/crowdanki/$target"
           done
