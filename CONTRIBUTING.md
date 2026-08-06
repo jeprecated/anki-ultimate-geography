@@ -8,9 +8,8 @@ Seen something outdated or plain wrong? Spotted a typo somewhere? Think somethin
 
 - [**Contributor's guide**](#contributors-guide)
   - [Getting started](#getting-started)
-  - [Brain Brew recipes](#brain-brew-recipes)
-    - [Source to Anki](#source-to-anki)
-    - [Anki to Source](#anki-to-source)
+  - [Build and verify](#build-and-verify)
+  - [Source ownership](#source-ownership)
   - [How-to's](#how-tos)
 - [**Content inclusion rules**](#content-inclusion-rules)
   - [Political geography](#political-geography)
@@ -50,66 +49,31 @@ Ready to start working on an issue? Here is what you need to know.
 
 > If you're new to contributing on GitHub, [read this guide](https://guides.github.com/activities/contributing-to-open-source/) first.
 
-The deck is managed with [Brain Brew][Brain Brew], a deck manager that allows transforming _Ultimate Geography_ back and forth between its CrowdAnki JSON representation and a format that is easy for humans to read, modify and version-control (currently CSV). This means that one can edit this deck either here, in this repository, or in Anki itself.
+The deck is built with Rust Brain Brew from the manifest in `brainbrew.yaml`. The workflow pins the exact production revision and Rust toolchain.
 
-Brain Brew and its dependencies are managed with [Pipenv](https://pipenv-fork.readthedocs.io/en/latest/basics.html). Running Brain Brew inside a virtual environment guarantees that is not hampered by individual setups.
-
-The content of the deck is stored in multiple CSV files under `src/data`. The main file is `main.csv`. Each row corresponds to a note and each column to a field.
-
-Translated fields, such as _Country_ or _Capital info_, have their own CSV files called _derivatives_, in which each column corresponds to one language. The _Country_ field is used to map rows in the derivatives with notes in `main.csv`. The mapping is not necessarily one to one: if a note has no capital (e.g. because it's a water body), then it must not appear in `capital.csv`.
-
-The note model templates are generated from the base templates in `src/note_models/templates/base` and the per-language substitutions in `src/note_models/translations.csv`. The rendered templates live in `src/note_models/templates/generated` and should not be edited directly. Regenerate them with `pipenv run generate_templates` (or `pipenv run build`, which calls `utils/generate_and_build.py`).
+All 323 notes are composed from the joined CSV tables under `src/data`. `ids.csv` owns stable note and media identities; `main.csv` retains the legacy content columns; language overlays select literal localized columns. Root YAML owns deck structure, note types, media, templates, and the shared Extended and Experimental variants. Generated note or template YAML is not a production source.
 
 ### Getting started
 
-1. Fork and clone this repository on your machine.
-1. [Install Python 3.7](https://www.python.org/downloads/release/python-379/)
-   - During the installation, make sure to install `pip` (it's optional) and to tick _Add Python 3.7 to PATH_.
-1. Install Pipenv with `pip install pipenv`.
-   - If the `pip` executable is not available, try `pip3 install pipenv` instead.
-1. In the root directory of your fork, run `pipenv install` to install Brain Brew and its dependencies in a new virtual environment.
-1. Generate note model templates with `pipenv run generate_templates`.
-1. You can now run this deck's Brain Brew recipes with `pipenv run brain_brew run recipes/<filename>.yaml`.
-   - Alternatively, run `pipenv run build` to both generate the templates and build the deck for Anki with the `source_to_anki.yaml` recipe.
+1. Fork and clone this repository.
+1. Install Rust `1.94.0` and Python `3.11`.
+1. Install the Brain Brew revision pinned in `.github/workflows/integrity-check.yml` and confirm its reported version.
 
-### Brain Brew recipes
+### Build and verify
 
-#### Source to Anki
+The production check validates source identities, stages exact media bytes, verifies the 48-target manifest, and exports every CrowdAnki deck. Run the same commands as the `Validate and export all 48 targets` workflow step. Outputs are written under `build/brainbrew/crowdanki`.
 
-```bash
-pipenv run brain_brew run recipes/source_to_anki.yaml
-```
+For a focused edit, use `brainbrew validate`, `compose`, `verify`, `translations`, `explain`, and `export crowdanki` with `--manifest brainbrew.yaml --target <language>-<variant>`.
 
-This recipe builds the deck from source in a format that can be imported into Anki with the CrowdAnki add-on. More precisely, it generates every possible version of the deck (i.e. standard + extended, in every language) into sub-folders inside the `build` folder. Each of these sub-folders includes a CrowdAnki JSON file and all of the deck's images.
+### Source ownership
 
-On first run, this recipe generates all the missing files and folders in the `build` folder, logging warnings in the output. Upon subsequent runs, the warnings disappear.
-
-If you update `src/note_models/templates/base` or `src/note_models/translations.csv`, run `pipenv run generate_templates` (or just use `pipenv run build`) before running Brain Brew directly.
-
-#### Anki to Source
-
-```bash
-pipenv run brain_brew run recipes/anki_to_source.yaml
-```
-
-or
-
-```bash
-pipenv run brain_brew run recipes/anki_to_source_[extended].yaml
-```
-
-These recipes allows editing the English standard or extended deck in Anki, and then pulling the changes into the CSVs. Other languages are currently not supported. It also does not support editing the note model, card templates, deck description, etc. -- only the content of the notes.
-
-1. Make your edits in Anki.
-1. Export the deck with CrowdAnki into the `build/Ultimate Geography [EN]` or `build/Ultimate Geography [EN] [Extended]` folders for the standard and extended decks respectively.
-1. Run `pipenv run brain_brew run recipes/anki_to_source.yaml` or `pipenv run brain_brew run recipes/anki_to_source_[extended].yaml`.
-1. Any new media will be placed at the top level of the `src/media` folder and will need to be moved into the appropriate sub-folder.
+Brain Brew reads the CSV tables but never writes them. Edit CSV content directly in this repository; importing a changed Anki deck back into CSV is not supported. Translation reports are diagnostic: stale or missing cells must be corrected in the relevant CSV.
 
 ### How-to's
 
-- To **add a new note** to the deck, add one row to `main.csv`, `guid.csv`, and any of the derivative CSVs as needed. Don't fill in any of the GUIDs in `guid.csv` -- they will be generated automatically by the `source_to_anki.yaml` recipe.
-- To **change the _Country_ field** of a note, change it in `main.csv`, `guid.csv`, `country.csv`, and any other derivative CSV in which the note appears.
-- To **add a new translation**, add a new column to each of the CSV files and name them as follows: `[field name]:[language code]` (e.g. `country info:fr`, all lowercase). In most cases, the language code should match the Wikipedia subdomain for that language (e.g. https://fr.wikipedia.org/). Then add a row in `src/note_models/translations.csv` with the language code and translations for the template strings used in the Anki notes.
+- To **add a new note**, add matching rows to `ids.csv`, `main.csv`, `guid.csv`, and the joined field CSVs as needed. Use unique stable IDs, valid media IDs, and explicit localized CrowdAnki GUIDs.
+- To **change the _Country_ field**, update the join key consistently in every CSV containing that note.
+- To **add a translation**, add literal `[field name]:[language code]` columns to each applicable CSV, then follow an existing language's translation and variant overlays.
 
 When editing `guid.csv` please try to avoid using a spreadsheet, if possible, and instead use a text editor (e.g. notepad) since spreadsheets mangle some of the GUIDs that start with `=` signs.
 
@@ -398,15 +362,15 @@ Content changes, such as adding a note, replacing an image, or translating the d
 
 1. Open a discussion thread named _Prepare for v[x.y]_ a few weeks ahead of the release to coordinate any remaining work.
 1. When ready to release, bump the version number in `src/headers/desc.html`.
-1. Run `pipenv run build`.
+1. Run the full [build and verification](#build-and-verify) command.
 1. In Anki, synchronise all your devices then upgrade the standard English deck by following the recommended procedure, which was agreed upon in the discussion thread. Synchronise all your devices again once the upgrade is complete.
 1. With the help of the Anki card browser, update the notes/cards stats in both `desc.html` and `README.md`, and commit the changes (including the version bump).
-1. Run `pipenv run build` again. If there is an experimental deck to be released, also run `pipenv run build_experimental`.
+1. Run the full build and verification command again.
 1. Reimport the standard English deck in Anki and synchronise with AnkiWeb.
-1. Add each folder in the `build` directory to a separate ZIP archive named as follows:
+1. Add each folder in `build/brainbrew/crowdanki` to a separate ZIP archive named as follows:
    - `Ultimate Geography [EN]` ==> `Ultimate_Geography_v[x.y]_EN.zip`.
    - `Ultimate Geography [EN] [Extended]` ==> `Ultimate_Geography_v[x.y]_EN_EXTENDED.zip`.
-   This can be done with `pipenv run zip`.
+   This can be done with `python utils/zip_decks.py` after the full build.
 1. On GitHub, create a new **release** named after the version number.
 1. Draft the release notes, making sure to add a link to the upgrade steps in the `README` and/or [in the wiki](https://github.com/anki-geo/ultimate-geography/wiki/Upgrade-instructions).
 1. Attach all the ZIP files and save the draft release notes.
@@ -442,7 +406,7 @@ The recommended structure, which can of course be tweaked and expanded as needed
 4. New notes, if any, with links to Wikipedia and optionally justification on why those notes were added (e.g. new/changed inclusion criteria)
 5. Changes to country names, capitals and supplementary info.
 6. Changes to maps and flags.
-7. Other changes, for instance to the structure of the deck (tags, description, etc.), the documentation (when significant), or the BrainBrew recipes and development tool chain (if relevant to power users).
+7. Other changes, for instance to the structure of the deck (tags, description, etc.), the documentation (when significant), or the Brain Brew development toolchain (if relevant to power users).
 8. Contributors (at least new contributors) _(optional)_
 
 Here are som additional guidelines:
@@ -486,4 +450,4 @@ Here are som additional guidelines:
 [ref416]: https://github.com/anki-geo/ultimate-geography/issues/416#issuecomment-821864712
 [ref587]: https://github.com/anki-geo/ultimate-geography/pull/587#issuecomment-1357163000
 [ref672]: https://github.com/anki-geo/ultimate-geography/issues/672#issuecomment-2631222673
-[Brain Brew]: https://github.com/ohare93/brain-brew
+[Brain Brew]: https://github.com/jeprecated/brain-brew

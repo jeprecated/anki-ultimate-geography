@@ -3,33 +3,7 @@ name: Integrity check
 on: [push, pull_request]
 
 jobs:
-  legacy:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-      - name: Install legacy dependencies
-        run: |
-          python -m pip install --upgrade pipenv
-          pipenv sync --dev
-      - name: Build all legacy decks
-        run: |
-          pipenv run build
-          pipenv run build_experimental
-      - name: Preserve legacy oracles
-        run: |
-          mkdir -p build/legacy-all
-          cp -a build/'Ultimate Geography '* build/legacy-all/
-      - uses: actions/upload-artifact@v4
-        with:
-          name: legacy-all
-          path: build/legacy-all
-          if-no-files-found: error
-
-  rust-shadow:
-    needs: legacy
+  build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -47,11 +21,7 @@ jobs:
             --rev 1e56a90a42be2522431cd678dfd81617eb4214a6 \
             --locked
           test "$(brainbrew --version)" = 'brainbrew 1.0.0-alpha.8'
-      - uses: actions/download-artifact@v4
-        with:
-          name: legacy-all
-          path: build/legacy-all
-      - name: Certify full dual-pipeline parity
+      - name: Validate and export all 48 targets
         run: |
           export PYTHONDONTWRITEBYTECODE=1
           python -m unittest -v \
@@ -80,18 +50,13 @@ jobs:
           PY
           diff -u migration/brainbrew/expected-targets.txt build/brainbrew-target-names
 
+          brainbrew media hash --manifest brainbrew.yaml --all-targets \
+            --media-root build/brainbrew-media/standard
+          sha256sum --check /tmp/brainbrew-yaml.sha256
+
           python migration/brainbrew/certify_full_parity.py \
             --brainbrew brainbrew \
-            --legacy-root build/legacy-all \
-            --rust-root build/brainbrew-certification \
+            --expected-report migration/brainbrew/full-parity.json \
+            --rust-root build/brainbrew \
             --media-root build/brainbrew-media/standard \
-            --report build/brainbrew-certification/full-parity.json \
-            --markdown build/brainbrew-certification/full-parity.md
-      - uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: full-parity-certification
-          path: |
-            build/brainbrew-certification/full-parity.json
-            build/brainbrew-certification/full-parity.md
-          if-no-files-found: ignore
+            --report build/brainbrew/certification.json
