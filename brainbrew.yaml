@@ -1,0 +1,31 @@
+package:
+  id: anki-geo.ultimate-geography
+  version: 1.0.0
+base: deck.yaml
+overlays: {}
+targets:
+  en-standard:
+    overlays: []
+    exports:
+      crowdanki:
+        out: build/brainbrew/crowdanki/en-standard
+languages:
+  en:
+    display_name: English
+    source: true
+    primary_target: standard
+    targets:
+      standard: en-standard
+translation_profile:
+  structural_fields:
+    - field.flag
+    - field.map
+  metadata_paths:
+    - 'deck.*'
+    - 'note_types.*'
+    - 'notes.*.tags.*'
+  metadata_exclude_paths:
+    - 'deck.adapter_ids.*'
+    - 'note_types.*.adapter_ids.*'
+    - 'note_types.*.card_templates.*.adapter_ids.*'
+    - 'notes.*.adapter_ids.*'

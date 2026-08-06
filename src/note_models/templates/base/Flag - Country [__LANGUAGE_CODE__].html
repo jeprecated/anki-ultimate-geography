@@ -1,23 +1,23 @@
-<div dir="__TEXT_DIRECTION__">
+<div dir="${text.direction}">
 {{#Flag}}
   <div class="value value--top">?</div>
 
   <hr>
 
-  <div class="type">__FLAG_TRANSLATION__</div>
+  <div class="type">${label.flag}</div>
   <div class="value value--image value--front">{{Flag}}</div>
 {{/Flag}}
 </div>
 
 --
 
-<div dir="__TEXT_DIRECTION__">
+<div dir="${text.direction}">
 <div id=answer class="value value--top">{{Country}}</div>
 {{#Country info}}<div class="info">{{Country info}}</div>{{/Country info}}
 
 <hr>
 
-<div class="type">__FLAG_TRANSLATION__</div>
+<div class="type">${label.flag}</div>
 <div class="value value--image value--back">{{Flag}}</div>
-{{#Flag similarity}}<div class="info">__FLAG_SIMILARITY_TRANSLATION__</div>{{/Flag similarity}}
+{{#Flag similarity}}<div class="info">${sentence.flag-similar}</div>{{/Flag similarity}}
 </div>

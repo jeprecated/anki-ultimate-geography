@@ -3,29 +3,93 @@ name: Integrity check
 on: [push, pull_request]
 
 jobs:
-
-  build:
+  legacy:
     runs-on: ubuntu-latest
-
     steps:
-    - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install legacy dependencies
+        run: |
+          python -m pip install --upgrade pipenv
+          pipenv sync --dev
+      - name: Build all legacy decks
+        run: |
+          pipenv run build
+          pipenv run build_experimental
+      - name: Preserve English Standard oracle
+        run: |
+          mkdir -p build/legacy-en-standard-artifact
+          cp -a 'build/Ultimate Geography [EN]/.' build/legacy-en-standard-artifact/
+      - uses: actions/upload-artifact@v4
+        with:
+          name: legacy-en-standard
+          path: build/legacy-en-standard-artifact
+          if-no-files-found: error
 
-    - name: Set up Python 3.11
-      uses: actions/setup-python@v2
-      with:
-        python-version: 3.11
+  rust-en-standard-shadow:
+    needs: legacy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Set up Rust 1.94.0
+        run: |
+          rustup toolchain install 1.94.0 --profile minimal
+          rustup default 1.94.0
+      - name: Install exact Rust Brain Brew
+        run: |
+          cargo install brainbrew \
+            --git https://github.com/jeprecated/brain-brew.git \
+            --rev 1e56a90a42be2522431cd678dfd81617eb4214a6 \
+            --locked
+          test "$(brainbrew --version)" = 'brainbrew 1.0.0-alpha.8'
+      - uses: actions/download-artifact@v4
+        with:
+          name: legacy-en-standard
+          path: build/legacy-en-standard
+      - name: Validate English Standard shadow
+        run: |
+          export PYTHONDONTWRITEBYTECODE=1
+          python -m unittest -v \
+            migration/brainbrew/test_compare_crowdanki.py \
+            migration/brainbrew/test_validate_ids.py \
+            migration/brainbrew/test_stage_media.py
+          python migration/brainbrew/validate_ids.py
+          python migration/brainbrew/stage_media.py stage
+          python migration/brainbrew/stage_media.py check
 
-    - name: Install dependencies
-      run: |
-        python3 -m pip install --upgrade pipenv
-        pipenv install
+          sha256sum brainbrew.yaml deck.yaml note-types.yaml media.yaml > /tmp/brainbrew-yaml.sha256
+          brainbrew fmt brainbrew.yaml
+          brainbrew fmt deck.yaml
+          brainbrew fmt note-types.yaml
+          brainbrew fmt media.yaml
+          sha256sum --check /tmp/brainbrew-yaml.sha256
 
-    - name: Validate regular & extended decks
-      run: |
-        pipenv run build
+          brainbrew targets --manifest brainbrew.yaml --json > build/brainbrew-targets.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          targets = json.loads(Path('build/brainbrew-targets.json').read_text())['targets']
+          assert [target['name'] for target in targets] == ['en-standard'], targets
+          PY
 
-    - name: Validate experimental deck
-      run: |
-        pipenv run build_experimental
-
-      # TODO: Validate the csv file structure
+          brainbrew validate --manifest brainbrew.yaml --target en-standard
+          mkdir -p build/brainbrew
+          brainbrew compose --manifest brainbrew.yaml --target en-standard \
+            --out build/brainbrew/en-standard.yaml
+          brainbrew verify --manifest brainbrew.yaml --target en-standard \
+            --media-root build/brainbrew-media/standard
+          brainbrew explain --manifest brainbrew.yaml --target en-standard --json \
+            > build/brainbrew/en-standard-explain.json
+          brainbrew translations --manifest brainbrew.yaml --target en-standard --json \
+            > build/brainbrew/en-standard-translations.json
+          brainbrew export crowdanki --manifest brainbrew.yaml --target en-standard \
+            --media-root build/brainbrew-media/standard \
+            --out build/brainbrew/crowdanki/en-standard
+          python migration/brainbrew/compare_crowdanki.py \
+            build/legacy-en-standard \
+            build/brainbrew/crowdanki/en-standard
