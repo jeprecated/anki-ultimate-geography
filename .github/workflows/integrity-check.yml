@@ -51,10 +51,11 @@ jobs:
         with:
           name: legacy-all
           path: build/legacy-all
-      - name: Validate adopted Rust targets
+      - name: Certify full dual-pipeline parity
         run: |
           export PYTHONDONTWRITEBYTECODE=1
           python -m unittest -v \
+            migration/brainbrew/test_certify_full_parity.py \
             migration/brainbrew/test_compare_crowdanki.py \
             migration/brainbrew/test_validate_ids.py \
             migration/brainbrew/test_stage_media.py
@@ -79,32 +80,18 @@ jobs:
           PY
           diff -u migration/brainbrew/expected-targets.txt build/brainbrew-target-names
 
-          mkdir -p build/brainbrew/crowdanki
-          while IFS= read -r target; do
-            brainbrew validate --manifest brainbrew.yaml --target "$target"
-            brainbrew compose --manifest brainbrew.yaml --target "$target" \
-              --out "build/brainbrew/$target.yaml"
-            brainbrew verify --manifest brainbrew.yaml --target "$target" \
-              --media-root build/brainbrew-media/standard
-            brainbrew explain --manifest brainbrew.yaml --target "$target" --json \
-              > "build/brainbrew/$target-explain.json"
-            brainbrew translations --manifest brainbrew.yaml --target "$target" --json \
-              > "build/brainbrew/$target-translations.json"
-            brainbrew export crowdanki --manifest brainbrew.yaml --target "$target" \
-              --media-root build/brainbrew-media/standard \
-              --out "build/brainbrew/crowdanki/$target"
-
-            language=${target%-*}
-            variant=${target##*-}
-            language=$(printf '%s' "$language" | tr '[:lower:]' '[:upper:]')
-            legacy="Ultimate Geography [$language]"
-            case "$variant" in
-              experimental) legacy="$legacy [Experimental]" ;;
-              extended) legacy="$legacy [Extended]" ;;
-              standard) ;;
-              *) echo "Unknown target variant: $variant" >&2; exit 1 ;;
-            esac
-            python migration/brainbrew/compare_crowdanki.py \
-              "build/legacy-all/$legacy" \
-              "build/brainbrew/crowdanki/$target"
-          done < build/brainbrew-target-names
+          python migration/brainbrew/certify_full_parity.py \
+            --brainbrew brainbrew \
+            --legacy-root build/legacy-all \
+            --rust-root build/brainbrew-certification \
+            --media-root build/brainbrew-media/standard \
+            --report build/brainbrew-certification/full-parity.json \
+            --markdown build/brainbrew-certification/full-parity.md
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: full-parity-certification
+          path: |
+            build/brainbrew-certification/full-parity.json
+            build/brainbrew-certification/full-parity.md
+          if-no-files-found: ignore
