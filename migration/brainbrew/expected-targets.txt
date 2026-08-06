@@ -1,0 +1,16 @@
+cs-standard
+da-standard
+de-experimental
+de-standard
+en-experimental
+en-extended
+en-standard
+es-standard
+fr-standard
+it-standard
+nb-standard
+nl-standard
+pl-standard
+pt-standard
+ru-standard
+sv-standard

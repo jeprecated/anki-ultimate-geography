@@ -7,8 +7,30 @@ overlays:
     file: experimental.yaml
   overlay.extension.extended:
     file: extended.yaml
+  overlay.translation.cs:
+    file: translation-cs.yaml
+  overlay.translation.da:
+    file: translation-da.yaml
   overlay.translation.de:
     file: translation-de.yaml
+  overlay.translation.es:
+    file: translation-es.yaml
+  overlay.translation.fr:
+    file: translation-fr.yaml
+  overlay.translation.it:
+    file: translation-it.yaml
+  overlay.translation.nb:
+    file: translation-nb.yaml
+  overlay.translation.nl:
+    file: translation-nl.yaml
+  overlay.translation.pl:
+    file: translation-pl.yaml
+  overlay.translation.pt:
+    file: translation-pt.yaml
+  overlay.translation.ru:
+    file: translation-ru.yaml
+  overlay.translation.sv:
+    file: translation-sv.yaml
   overlay.variant.experimental.de:
     file: overlays/variants/experimental/de.yaml
   overlay.variant.experimental.en:
@@ -16,6 +38,20 @@ overlays:
   overlay.variant.extended.en:
     file: overlays/variants/extended/en.yaml
 targets:
+  cs-standard:
+    extends: en-standard
+    overlays:
+      - overlay.translation.cs
+    exports:
+      crowdanki:
+        out: build/brainbrew/crowdanki/cs-standard
+  da-standard:
+    extends: en-standard
+    overlays:
+      - overlay.translation.da
+    exports:
+      crowdanki:
+        out: build/brainbrew/crowdanki/da-standard
   de-experimental:
     extends: de-standard
     overlays:
@@ -52,7 +88,84 @@ targets:
     exports:
       crowdanki:
         out: build/brainbrew/crowdanki/en-standard
+  es-standard:
+    extends: en-standard
+    overlays:
+      - overlay.translation.es
+    exports:
+      crowdanki:
+        out: build/brainbrew/crowdanki/es-standard
+  fr-standard:
+    extends: en-standard
+    overlays:
+      - overlay.translation.fr
+    exports:
+      crowdanki:
+        out: build/brainbrew/crowdanki/fr-standard
+  it-standard:
+    extends: en-standard
+    overlays:
+      - overlay.translation.it
+    exports:
+      crowdanki:
+        out: build/brainbrew/crowdanki/it-standard
+  nb-standard:
+    extends: en-standard
+    overlays:
+      - overlay.translation.nb
+    exports:
+      crowdanki:
+        out: build/brainbrew/crowdanki/nb-standard
+  nl-standard:
+    extends: en-standard
+    overlays:
+      - overlay.translation.nl
+    exports:
+      crowdanki:
+        out: build/brainbrew/crowdanki/nl-standard
+  pl-standard:
+    extends: en-standard
+    overlays:
+      - overlay.translation.pl
+    exports:
+      crowdanki:
+        out: build/brainbrew/crowdanki/pl-standard
+  pt-standard:
+    extends: en-standard
+    overlays:
+      - overlay.translation.pt
+    exports:
+      crowdanki:
+        out: build/brainbrew/crowdanki/pt-standard
+  ru-standard:
+    extends: en-standard
+    overlays:
+      - overlay.translation.ru
+    exports:
+      crowdanki:
+        out: build/brainbrew/crowdanki/ru-standard
+  sv-standard:
+    extends: en-standard
+    overlays:
+      - overlay.translation.sv
+    exports:
+      crowdanki:
+        out: build/brainbrew/crowdanki/sv-standard
 languages:
+  cs:
+    display_name: Czech
+    translation_overlays:
+      base: overlay.translation.cs
+    primary_target: standard
+    targets:
+      standard: cs-standard
+  da:
+    display_name: Danish
+    translation_overlays:
+      base: overlay.translation.da
+    primary_target: standard
+    targets:
+      standard: da-standard
   de:
     display_name: German
     translation_overlays:
@@ -69,6 +182,69 @@ languages:
       experimental: en-experimental
       extended: en-extended
       standard: en-standard
+  es:
+    display_name: Spanish
+    translation_overlays:
+      base: overlay.translation.es
+    primary_target: standard
+    targets:
+      standard: es-standard
+  fr:
+    display_name: French
+    translation_overlays:
+      base: overlay.translation.fr
+    primary_target: standard
+    targets:
+      standard: fr-standard
+  it:
+    display_name: Italian
+    translation_overlays:
+      base: overlay.translation.it
+    primary_target: standard
+    targets:
+      standard: it-standard
+  nb:
+    display_name: 'Norwegian Bokmål'
+    translation_overlays:
+      base: overlay.translation.nb
+    primary_target: standard
+    targets:
+      standard: nb-standard
+  nl:
+    display_name: Dutch
+    translation_overlays:
+      base: overlay.translation.nl
+    primary_target: standard
+    targets:
+      standard: nl-standard
+  pl:
+    display_name: Polish
+    translation_overlays:
+      base: overlay.translation.pl
+    primary_target: standard
+    targets:
+      standard: pl-standard
+  pt:
+    display_name: Portuguese
+    translation_overlays:
+      base: overlay.translation.pt
+    primary_target: standard
+    targets:
+      standard: pt-standard
+  ru:
+    display_name: Russian
+    translation_overlays:
+      base: overlay.translation.ru
+    primary_target: standard
+    targets:
+      standard: ru-standard
+  sv:
+    display_name: Swedish
+    translation_overlays:
+      base: overlay.translation.sv
+    primary_target: standard
+    targets:
+      standard: sv-standard
 translation_profile:
   structural_fields:
     - field.flag
