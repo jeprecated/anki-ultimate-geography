@@ -18,17 +18,22 @@ jobs:
         run: |
           pipenv run build
           pipenv run build_experimental
-      - name: Preserve English Standard oracle
+      - name: Preserve pilot oracles
         run: |
-          mkdir -p build/legacy-en-standard-artifact
-          cp -a 'build/Ultimate Geography [EN]/.' build/legacy-en-standard-artifact/
+          mkdir -p build/legacy-pilot
+          cp -a \
+            'build/Ultimate Geography [EN]' \
+            'build/Ultimate Geography [DE]' \
+            'build/Ultimate Geography [EN] [Experimental]' \
+            'build/Ultimate Geography [DE] [Experimental]' \
+            build/legacy-pilot/
       - uses: actions/upload-artifact@v4
         with:
-          name: legacy-en-standard
-          path: build/legacy-en-standard-artifact
+          name: legacy-pilot
+          path: build/legacy-pilot
           if-no-files-found: error
 
-  rust-en-standard-shadow:
+  rust-pilot-shadow:
     needs: legacy
     runs-on: ubuntu-latest
     steps:
@@ -49,9 +54,9 @@ jobs:
           test "$(brainbrew --version)" = 'brainbrew 1.0.0-alpha.8'
       - uses: actions/download-artifact@v4
         with:
-          name: legacy-en-standard
-          path: build/legacy-en-standard
-      - name: Validate English Standard shadow
+          name: legacy-pilot
+          path: build/legacy-pilot
+      - name: Validate four-target pilot
         run: |
           export PYTHONDONTWRITEBYTECODE=1
           python -m unittest -v \
@@ -62,11 +67,9 @@ jobs:
           python migration/brainbrew/stage_media.py stage
           python migration/brainbrew/stage_media.py check
 
-          sha256sum brainbrew.yaml deck.yaml note-types.yaml media.yaml > /tmp/brainbrew-yaml.sha256
-          brainbrew fmt brainbrew.yaml
-          brainbrew fmt deck.yaml
-          brainbrew fmt note-types.yaml
-          brainbrew fmt media.yaml
+          files='brainbrew.yaml deck.yaml note-types.yaml media.yaml experimental.yaml translation-de.yaml overlays/variants/experimental/de.yaml overlays/variants/experimental/en.yaml'
+          sha256sum $files > /tmp/brainbrew-yaml.sha256
+          for file in $files; do brainbrew fmt "$file"; done
           sha256sum --check /tmp/brainbrew-yaml.sha256
 
           brainbrew targets --manifest brainbrew.yaml --json > build/brainbrew-targets.json
@@ -74,22 +77,32 @@ jobs:
           import json
           from pathlib import Path
           targets = json.loads(Path('build/brainbrew-targets.json').read_text())['targets']
-          assert [target['name'] for target in targets] == ['en-standard'], targets
+          assert [target['name'] for target in targets] == [
+              'de-experimental', 'de-standard', 'en-experimental', 'en-standard'
+          ], targets
           PY
 
-          brainbrew validate --manifest brainbrew.yaml --target en-standard
           mkdir -p build/brainbrew
-          brainbrew compose --manifest brainbrew.yaml --target en-standard \
-            --out build/brainbrew/en-standard.yaml
-          brainbrew verify --manifest brainbrew.yaml --target en-standard \
-            --media-root build/brainbrew-media/standard
-          brainbrew explain --manifest brainbrew.yaml --target en-standard --json \
-            > build/brainbrew/en-standard-explain.json
-          brainbrew translations --manifest brainbrew.yaml --target en-standard --json \
-            > build/brainbrew/en-standard-translations.json
-          brainbrew export crowdanki --manifest brainbrew.yaml --target en-standard \
-            --media-root build/brainbrew-media/standard \
-            --out build/brainbrew/crowdanki/en-standard
-          python migration/brainbrew/compare_crowdanki.py \
-            build/legacy-en-standard \
-            build/brainbrew/crowdanki/en-standard
+          for target in de-experimental de-standard en-experimental en-standard; do
+            brainbrew validate --manifest brainbrew.yaml --target "$target"
+            brainbrew compose --manifest brainbrew.yaml --target "$target" \
+              --out "build/brainbrew/$target.yaml"
+            brainbrew verify --manifest brainbrew.yaml --target "$target" \
+              --media-root build/brainbrew-media/standard
+            brainbrew explain --manifest brainbrew.yaml --target "$target" --json \
+              > "build/brainbrew/$target-explain.json"
+            brainbrew translations --manifest brainbrew.yaml --target "$target" --json \
+              > "build/brainbrew/$target-translations.json"
+            brainbrew export crowdanki --manifest brainbrew.yaml --target "$target" \
+              --media-root build/brainbrew-media/standard \
+              --out "build/brainbrew/crowdanki/$target"
+            case "$target" in
+              de-experimental) legacy='Ultimate Geography [DE] [Experimental]' ;;
+              de-standard) legacy='Ultimate Geography [DE]' ;;
+              en-experimental) legacy='Ultimate Geography [EN] [Experimental]' ;;
+              en-standard) legacy='Ultimate Geography [EN]' ;;
+            esac
+            python migration/brainbrew/compare_crowdanki.py \
+              "build/legacy-pilot/$legacy" \
+              "build/brainbrew/crowdanki/$target"
+          done

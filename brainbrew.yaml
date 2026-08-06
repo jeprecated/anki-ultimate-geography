@@ -2,24 +2,65 @@ package:
   id: anki-geo.ultimate-geography
   version: 1.0.0
 base: deck.yaml
-overlays: {}
+overlays:
+  overlay.extension.experimental:
+    file: experimental.yaml
+  overlay.translation.de:
+    file: translation-de.yaml
+  overlay.variant.experimental.de:
+    file: overlays/variants/experimental/de.yaml
+  overlay.variant.experimental.en:
+    file: overlays/variants/experimental/en.yaml
 targets:
+  de-experimental:
+    extends: de-standard
+    overlays:
+      - overlay.extension.experimental
+      - overlay.variant.experimental.de
+    exports:
+      crowdanki:
+        out: build/brainbrew/crowdanki/de-experimental
+  de-standard:
+    extends: en-standard
+    overlays:
+      - overlay.translation.de
+    exports:
+      crowdanki:
+        out: build/brainbrew/crowdanki/de-standard
+  en-experimental:
+    extends: en-standard
+    overlays:
+      - overlay.extension.experimental
+      - overlay.variant.experimental.en
+    exports:
+      crowdanki:
+        out: build/brainbrew/crowdanki/en-experimental
   en-standard:
     overlays: []
     exports:
       crowdanki:
         out: build/brainbrew/crowdanki/en-standard
 languages:
+  de:
+    display_name: German
+    translation_overlays:
+      base: overlay.translation.de
+    primary_target: standard
+    targets:
+      experimental: de-experimental
+      standard: de-standard
   en:
     display_name: English
     source: true
     primary_target: standard
     targets:
+      experimental: en-experimental
       standard: en-standard
 translation_profile:
   structural_fields:
     - field.flag
     - field.map
+    - field.region-code
   metadata_paths:
     - 'deck.*'
     - 'note_types.*'

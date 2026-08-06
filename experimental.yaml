@@ -1,0 +1,67 @@
+id: overlay.extension.experimental
+kind: extension
+field_additions:
+  note-type.ultimate-geography:
+    fields:
+      field.region-code: Region code
+    values:
+      from_csv:
+        - descriptor: src/data/experimental-region.yaml
+          parameters: {}
+note_types:
+  note-type.ultimate-geography:
+    intent: merge
+    variables:
+      variant.name-suffix:
+        intent: replace
+        value: ' [Experimental]'
+        expected_base:
+          value: ''
+    styling:
+      intent: replace
+      value: !include 'src/note_models/style_[Experimental].css'
+      expected_base:
+        value: !include src/note_models/style.css
+    card_templates:
+      template.country-flag:
+        intent: add
+        insert_after: template.capital-country
+        template:
+          name: Country - Flag
+          question_format: !include 'src/note_models/templates/base/Country - Flag [__LANGUAGE_CODE__].html#question'
+          answer_format: !include 'src/note_models/templates/base/Country - Flag [__LANGUAGE_CODE__].html#answer'
+          adapter_ids: {}
+      template.country-map:
+        intent: add
+        insert_after: template.flag-country
+        template:
+          name: Country - Map
+          question_format: !include 'src/note_models/templates/base/Country - Map [__LANGUAGE_CODE__] [Experimental].html#question'
+          answer_format: !include 'src/note_models/templates/base/Country - Map [__LANGUAGE_CODE__] [Experimental].html#answer'
+          adapter_ids: {}
+media:
+  media.interactive-map-config-js:
+    intent: add
+    path: _ug-interactive_map_config.js
+    source: src/media/experimental_assets/_ug-interactive_map_config.js
+    sha256: a6c8862ea95a0257f951ef4fdc9a3c1a7aa069d4bbc04847d064b26bf4885ea0
+  media.interactive-map-init-js:
+    intent: add
+    path: _ug-interactive_map_init.js
+    source: src/media/experimental_assets/_ug-interactive_map_init.js
+    sha256: fa70e8fa2a501f1360a83652157befa28b1de8a20a9a660f35e520d3c19c6ad2
+  media.jsvectormap-css:
+    intent: add
+    path: _ug-jsvectormap.min.css
+    source: src/media/experimental_assets/_ug-jsvectormap.min.css
+    sha256: fae18b26699328ea81afed84e8a0d8b3f351b07c5290e35714750bd1fcb63bfe
+  media.jsvectormap-js:
+    intent: add
+    path: _ug-jsvectormap.js
+    source: src/media/experimental_assets/_ug-jsvectormap.js
+    sha256: e3979d3e3dc42d5de35167faaac2722de730187a909ca4a98b058e8ed6b18f7b
+  media.world-js:
+    intent: add
+    path: _ug-world.js
+    source: src/media/experimental_assets/_ug-world.js
+    sha256: ae54701d4796a334c7f2168aab07d631c09c0ff6f84d6813744a3cb6c27008c1
