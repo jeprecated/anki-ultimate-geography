@@ -1,0 +1,39 @@
+id: overlay.translation.zh
+kind: translation
+translations:
+  from_csv:
+    - descriptor: src/data/ultimate-geography.yaml
+      parameters:
+        language: zh
+      exclude:
+        source_texts: []
+        note_ids: []
+        paths: []
+  variables:
+    label.capital:
+      Capital: '首都'
+    label.capital-hint:
+      'Hint: {{Capital hint}}': '提示：{{Capital hint}}'
+    label.flag:
+      Flag: '旗帜'
+    label.location:
+      Location: '位置'
+    note-type.name:
+      Ultimate Geography: 'Ultimate Geography [ZH]'
+    sentence.flag-similar:
+      'Flag similar to {{Flag similarity}}.': '旗帜类似于：{{Flag similarity}}。'
+  adapter_ids:
+    crowdanki:uuid:
+      43c5ba66-9a65-11e8-90c9-a0481cc15658: 6c995ee1-4b62-4019-a033-de0ef8651c83
+      43e2586a-9a65-11e8-a777-a0481cc15658: 30c7ff39-56b5-4693-8e16-aa862eb7a619
+deck:
+  name:
+    intent: replace
+    value: 'Ultimate Geography [ZH]'
+    expected_base:
+      value: Ultimate Geography
+  description:
+    intent: replace
+    value: !include src/headers/desc_zh.html
+    expected_base:
+      value: !include src/headers/desc.html

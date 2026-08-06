@@ -17,6 +17,8 @@ overlays:
     file: translation-es.yaml
   overlay.translation.fr:
     file: translation-fr.yaml
+  overlay.translation.he:
+    file: translation-he.yaml
   overlay.translation.it:
     file: translation-it.yaml
   overlay.translation.nb:
@@ -31,6 +33,10 @@ overlays:
     file: translation-ru.yaml
   overlay.translation.sv:
     file: translation-sv.yaml
+  overlay.translation.zh:
+    file: translation-zh.yaml
+  overlay.translation.zh-tw:
+    file: translation-zh-tw.yaml
   overlay.variant.experimental.de:
     file: overlays/variants/experimental/de.yaml
   overlay.variant.experimental.en:
@@ -102,6 +108,13 @@ targets:
     exports:
       crowdanki:
         out: build/brainbrew/crowdanki/fr-standard
+  he-standard:
+    extends: en-standard
+    overlays:
+      - overlay.translation.he
+    exports:
+      crowdanki:
+        out: build/brainbrew/crowdanki/he-standard
   it-standard:
     extends: en-standard
     overlays:
@@ -151,6 +164,20 @@ targets:
     exports:
       crowdanki:
         out: build/brainbrew/crowdanki/sv-standard
+  zh-standard:
+    extends: en-standard
+    overlays:
+      - overlay.translation.zh
+    exports:
+      crowdanki:
+        out: build/brainbrew/crowdanki/zh-standard
+  zh-tw-standard:
+    extends: en-standard
+    overlays:
+      - overlay.translation.zh-tw
+    exports:
+      crowdanki:
+        out: build/brainbrew/crowdanki/zh-tw-standard
 languages:
   cs:
     display_name: Czech
@@ -196,6 +223,13 @@ languages:
     primary_target: standard
     targets:
       standard: fr-standard
+  he:
+    display_name: Hebrew
+    translation_overlays:
+      base: overlay.translation.he
+    primary_target: standard
+    targets:
+      standard: he-standard
   it:
     display_name: Italian
     translation_overlays:
@@ -245,6 +279,20 @@ languages:
     primary_target: standard
     targets:
       standard: sv-standard
+  zh:
+    display_name: 'Chinese (Simplified)'
+    translation_overlays:
+      base: overlay.translation.zh
+    primary_target: standard
+    targets:
+      standard: zh-standard
+  zh-tw:
+    display_name: 'Chinese (Traditional)'
+    translation_overlays:
+      base: overlay.translation.zh-tw
+    primary_target: standard
+    targets:
+      standard: zh-tw-standard
 translation_profile:
   structural_fields:
     - field.flag
