@@ -2,7 +2,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from migration.brainbrew.validate_ids import ROOT, validate
+from utils.validate_ids import ROOT, validate
 
 
 class ValidateIdsTests(unittest.TestCase):

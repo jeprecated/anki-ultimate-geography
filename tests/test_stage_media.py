@@ -3,7 +3,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from migration.brainbrew.stage_media import check, stage
+from utils.stage_media import check, stage
 
 
 class StageMediaTest(unittest.TestCase):

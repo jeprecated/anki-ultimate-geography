@@ -25,13 +25,11 @@ jobs:
         run: |
           export PYTHONDONTWRITEBYTECODE=1
           python -m unittest -v \
-            migration/brainbrew/test_compare_crowdanki.py \
-            migration/brainbrew/test_compare_media_rename.py \
-            migration/brainbrew/test_validate_ids.py \
-            migration/brainbrew/test_stage_media.py
-          python migration/brainbrew/validate_ids.py
-          python migration/brainbrew/stage_media.py stage
-          python migration/brainbrew/stage_media.py check
+            tests/test_validate_ids.py \
+            tests/test_stage_media.py
+          python utils/validate_ids.py
+          python utils/stage_media.py stage
+          python utils/stage_media.py check
 
           files=(brainbrew.yaml deck.yaml note-types.yaml media.yaml experimental.yaml extended.yaml)
           for file in translation-*.yaml overlays/variants/*/*.yaml; do
@@ -48,14 +46,12 @@ jobs:
           for target in json.loads(Path('build/brainbrew-targets.json').read_text())['targets']:
               print(target['name'])
           PY
-          diff -u migration/brainbrew/expected-targets.txt build/brainbrew-target-names
+          diff -u brainbrew-targets.txt build/brainbrew-target-names
 
           brainbrew media hash --manifest brainbrew.yaml --all-targets \
             --media-root build/brainbrew-media/standard
           sha256sum --check /tmp/brainbrew-yaml.sha256
 
-          brainbrew verify --manifest brainbrew.yaml --all-targets \
-            --media-root build/brainbrew-media/standard
           mkdir -p build/brainbrew/crowdanki
           while IFS= read -r target; do
             language=${target%-*}
@@ -69,20 +65,55 @@ jobs:
               *) echo "Unknown target variant: $variant" >&2; exit 1 ;;
             esac
             brainbrew validate --manifest brainbrew.yaml --target "$target"
+            brainbrew compose --manifest brainbrew.yaml --target "$target" \
+              --out "build/brainbrew/$target.yaml"
+            brainbrew verify --manifest brainbrew.yaml --target "$target" \
+              --media-root build/brainbrew-media/standard
+            brainbrew explain --manifest brainbrew.yaml --target "$target" --json \
+              > "build/brainbrew/$target-explain.json"
+            brainbrew translations --manifest brainbrew.yaml --target "$target" --json \
+              > "build/brainbrew/$target-translations.json"
             brainbrew export crowdanki --manifest brainbrew.yaml --target "$target" \
               --media-root build/brainbrew-media/standard \
               --out "build/brainbrew/crowdanki/$directory"
           done < build/brainbrew-target-names
 
           python - <<'PY'
+          import json
           from pathlib import Path
-          from migration.brainbrew.compare_crowdanki import load_target
 
           exports = sorted(Path('build/brainbrew/crowdanki').iterdir())
           assert len(exports) == 48, len(exports)
           for export in exports:
-              target = load_target(export, export.name)
+              deck = json.loads((export / 'deck.json').read_text())
               expected_media = 555 if export.name.endswith('[Experimental]') else 550
-              assert len(target['deck']['notes']) == 323, export
-              assert len(target['media']) == expected_media, export
+              expected_templates = 6 if export.name.endswith(('[Extended]', '[Experimental]')) else 4
+              declared = deck['media_files']
+              actual = {path.name for path in (export / 'media').iterdir()}
+              assert len(deck['notes']) == len({note['guid'] for note in deck['notes']}) == 323, export
+              assert len(deck['note_models']) == 1, export
+              assert len(deck['note_models'][0]['tmpls']) == expected_templates, export
+              assert len(declared) == len(set(declared)) == expected_media, export
+              assert set(declared) == actual, export
+              assert deck['crowdanki_uuid'] and deck['desc'], export
+              if '[HE]' in export.name:
+                  expected_rtl = [True, True, True, True, True, False, True, False]
+                  if export.name.endswith('[Experimental]'):
+                      expected_rtl.append(False)
+                  assert [field['rtl'] for field in deck['note_models'][0]['flds']] == expected_rtl, export
+          PY
+
+          python utils/zip_decks.py
+          python - <<'PY'
+          from pathlib import Path
+          from zipfile import ZipFile
+
+          archives = sorted(Path('build/brainbrew/crowdanki').glob('Ultimate_Geography_*.zip'))
+          assert len(archives) == 48, len(archives)
+          for archive in archives:
+              with ZipFile(archive) as bundle:
+                  assert bundle.testzip() is None, archive
+                  names = bundle.namelist()
+                  assert any(name.endswith('/deck.json') for name in names), archive
+                  assert any('/media/' in name for name in names), archive
           PY
