@@ -6,7 +6,7 @@ import hashlib
 import re
 from pathlib import Path
 
-ROOT = Path(__file__).parents[2]
+ROOT = Path(__file__).parents[1]
 MAIN_HEADERS = ["country", "flag", "map", "region code", "ISO", "tags"]
 ID_HEADERS = ["country", "stable_id", "flag_media_id", "map_media_id"]
 MAIN_SHA256 = "c1688b7f47950f6ab83425e58543b16f1a161c65461a7bb680cd09acc0a7e1c2"

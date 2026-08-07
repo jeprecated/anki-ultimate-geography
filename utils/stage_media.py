@@ -8,7 +8,7 @@ import shutil
 import tempfile
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[2]
+ROOT = Path(__file__).resolve().parents[1]
 SOURCE_DIRS = (ROOT / "src/media/flags", ROOT / "src/media/maps")
 MANIFEST = ROOT / "media.yaml"
 DESTINATION = ROOT / "build/brainbrew-media/standard"
