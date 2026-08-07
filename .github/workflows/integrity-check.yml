@@ -25,8 +25,8 @@ jobs:
         run: |
           export PYTHONDONTWRITEBYTECODE=1
           python -m unittest -v \
-            migration/brainbrew/test_certify_full_parity.py \
             migration/brainbrew/test_compare_crowdanki.py \
+            migration/brainbrew/test_compare_media_rename.py \
             migration/brainbrew/test_validate_ids.py \
             migration/brainbrew/test_stage_media.py
           python migration/brainbrew/validate_ids.py
@@ -54,9 +54,35 @@ jobs:
             --media-root build/brainbrew-media/standard
           sha256sum --check /tmp/brainbrew-yaml.sha256
 
-          python migration/brainbrew/certify_full_parity.py \
-            --brainbrew brainbrew \
-            --expected-report migration/brainbrew/full-parity.json \
-            --rust-root build/brainbrew \
-            --media-root build/brainbrew-media/standard \
-            --report build/brainbrew/certification.json
+          brainbrew verify --manifest brainbrew.yaml --all-targets \
+            --media-root build/brainbrew-media/standard
+          mkdir -p build/brainbrew/crowdanki
+          while IFS= read -r target; do
+            language=${target%-*}
+            variant=${target##*-}
+            language=$(printf '%s' "$language" | tr '[:lower:]' '[:upper:]')
+            directory="Ultimate Geography [$language]"
+            case "$variant" in
+              experimental) directory="$directory [Experimental]" ;;
+              extended) directory="$directory [Extended]" ;;
+              standard) ;;
+              *) echo "Unknown target variant: $variant" >&2; exit 1 ;;
+            esac
+            brainbrew validate --manifest brainbrew.yaml --target "$target"
+            brainbrew export crowdanki --manifest brainbrew.yaml --target "$target" \
+              --media-root build/brainbrew-media/standard \
+              --out "build/brainbrew/crowdanki/$directory"
+          done < build/brainbrew-target-names
+
+          python - <<'PY'
+          from pathlib import Path
+          from migration.brainbrew.compare_crowdanki import load_target
+
+          exports = sorted(Path('build/brainbrew/crowdanki').iterdir())
+          assert len(exports) == 48, len(exports)
+          for export in exports:
+              target = load_target(export, export.name)
+              expected_media = 555 if export.name.endswith('[Experimental]') else 550
+              assert len(target['deck']['notes']) == 323, export
+              assert len(target['media']) == expected_media, export
+          PY

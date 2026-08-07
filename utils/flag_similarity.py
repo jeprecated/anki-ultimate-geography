@@ -432,8 +432,8 @@ def compare_flag_colours(
 
     """
 
-    filename_1 = f"src/media/flags/ug-flag-{country_name_1}.svg"
-    filename_2 = f"src/media/flags/ug-flag-{country_name_2}.svg"
+    filename_1 = f"src/media/flags/flag-{country_name_1}.svg"
+    filename_2 = f"src/media/flags/flag-{country_name_2}.svg"
     flag1 = extract_categorised_flag_colours(filename_1)
     flag2 = extract_categorised_flag_colours(filename_2)
 
@@ -519,8 +519,8 @@ def compare_flag_proportions(country_name_1: str, country_name_2: str) -> None:
         """Display fraction as x:y to match Wikipedia."""
         return f"{fraction.numerator}:{fraction.denominator}"
 
-    filename_1 = f"src/media/flags/ug-flag-{country_name_1}.svg"
-    filename_2 = f"src/media/flags/ug-flag-{country_name_2}.svg"
+    filename_1 = f"src/media/flags/flag-{country_name_1}.svg"
+    filename_2 = f"src/media/flags/flag-{country_name_2}.svg"
 
     proportions_1 = flag_proportions(filename_1)
     proportions_2 = flag_proportions(filename_2)

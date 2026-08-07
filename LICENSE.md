@@ -33,7 +33,7 @@ For more information, please refer to <http://unlicense.org>
 
 ## Images
 
-The sources and licenses of the flags (`ug-flag-...`) and maps (`ug-map-...`) in the `media` folder are listed in `sources.csv`. The following licenses are referenced in the _License_ column:
+The sources and licenses of the flags (`flag-...`) and maps (`map-...`) under `src/media` are listed in `sources.csv`. The following licenses are referenced in the _License_ column:
 
 - [CC BY-SA 1.0](https://creativecommons.org/licenses/by-sa/1.0/)
 - [CC BY-SA 2.5](https://creativecommons.org/licenses/by-sa/2.5/)
