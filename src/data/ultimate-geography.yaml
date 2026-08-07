@@ -1,0 +1,93 @@
+version: 1
+primary_table: ids
+tables:
+  ids:
+    path: ids.csv
+  main:
+    path: main.csv
+  guid:
+    path: guid.csv
+  country:
+    path: country.csv
+  country_info:
+    path: country_info.csv
+  capital:
+    path: capital.csv
+  capital_info:
+    path: capital_info.csv
+  capital_hint:
+    path: capital_hint.csv
+  flag_similarity:
+    path: flag_similarity.csv
+parameters:
+  language:
+    type: localized_column
+    default: ''
+    separator: ':'
+joins:
+  - left: ids.country
+    right: main.country
+    required: true
+  - left: ids.country
+    right: guid.country
+    required: true
+  - left: ids.country
+    right: country.country
+    required: true
+  - left: ids.country
+    right: country_info.country
+    required: false
+  - left: ids.country
+    right: capital.country
+    required: false
+  - left: ids.country
+    right: capital_info.country
+    required: false
+  - left: ids.country
+    right: capital_hint.country
+    required: false
+  - left: ids.country
+    right: flag_similarity.country
+    required: false
+note:
+  id: ids.stable_id
+  note_type_id: note-type.ultimate-geography
+  fields:
+    field.country:
+      column: country.country
+      localized_by: language
+      type: scalar
+    field.country-info:
+      column: country_info.country info
+      localized_by: language
+      type: scalar
+    field.capital:
+      column: capital.capital
+      localized_by: language
+      type: scalar
+    field.capital-info:
+      column: capital_info.capital info
+      localized_by: language
+      type: scalar
+    field.capital-hint:
+      column: capital_hint.capital hint
+      localized_by: language
+      type: scalar
+    field.flag:
+      column: ids.flag_media_id
+      type: image
+      delimiter: '|'
+    field.flag-similarity:
+      column: flag_similarity.flag similarity
+      localized_by: language
+      type: scalar
+    field.map:
+      column: ids.map_media_id
+      type: image
+  tags:
+    column: main.tags
+    delimiter: ', '
+  adapter_ids:
+    crowdanki:guid:
+      column: guid.guid
+      localized_by: language

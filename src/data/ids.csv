@@ -1,0 +1,324 @@
+country,stable_id,flag_media_id,map_media_id
+England,note.england,media.flag.england,media.map.england
+Scotland,note.scotland,media.flag.scotland,media.map.scotland
+United Kingdom,note.united-kingdom,media.flag.united-kingdom,media.map.united-kingdom
+Northern Ireland,note.northern-ireland,,media.map.northern-ireland
+France,note.france,media.flag.france,media.map.france
+Wales,note.wales,media.flag.wales,media.map.wales
+Georgia,note.georgia,media.flag.georgia,media.map.georgia
+Germany,note.germany,media.flag.germany,media.map.germany
+Greece,note.greece,media.flag.greece,media.map.greece
+Greenland,note.greenland,media.flag.greenland,media.map.greenland
+Hungary,note.hungary,media.flag.hungary,media.map.hungary
+Albania,note.albania,media.flag.albania,media.map.albania
+Andorra,note.andorra,media.flag.andorra,media.map.andorra
+Austria,note.austria,media.flag.austria,media.map.austria
+Azerbaijan,note.azerbaijan,media.flag.azerbaijan,media.map.azerbaijan
+Belarus,note.belarus,media.flag.belarus,media.map.belarus
+Belgium,note.belgium,media.flag.belgium,media.map.belgium
+Bosnia and Herzegovina,note.bosnia-and-herzegovina,media.flag.bosnia-and-herzegovina,media.map.bosnia-and-herzegovina
+Bulgaria,note.bulgaria,media.flag.bulgaria,media.map.bulgaria
+Croatia,note.croatia,media.flag.croatia,media.map.croatia
+Czech Republic,note.czech-republic,media.flag.czech-republic,media.map.czech-republic
+Denmark,note.denmark,media.flag.denmark,media.map.denmark
+Estonia,note.estonia,media.flag.estonia,media.map.estonia
+Faroe Islands,note.faroe-islands,media.flag.faroe-islands,media.map.faroe-islands
+Finland,note.finland,media.flag.finland,media.map.finland
+Iceland,note.iceland,media.flag.iceland,media.map.iceland
+Ireland,note.ireland,media.flag.ireland,media.map.ireland
+Italy,note.italy,media.flag.italy,media.map.italy
+Latvia,note.latvia,media.flag.latvia,media.map.latvia
+Liechtenstein,note.liechtenstein,media.flag.liechtenstein,media.map.liechtenstein
+Lithuania,note.lithuania,media.flag.lithuania,media.map.lithuania
+Luxembourg,note.luxembourg,media.flag.luxembourg,media.map.luxembourg
+North Macedonia,note.north-macedonia,media.flag.north-macedonia,media.map.north-macedonia
+Malta,note.malta,media.flag.malta,media.map.malta
+Moldova,note.moldova,media.flag.moldova,media.map.moldova
+Monaco,note.monaco,media.flag.monaco,media.map.monaco
+Montenegro,note.montenegro,media.flag.montenegro,media.map.montenegro
+Netherlands,note.netherlands,media.flag.netherlands,media.map.netherlands
+Norway,note.norway,media.flag.norway,media.map.norway
+Poland,note.poland,media.flag.poland,media.map.poland
+Portugal,note.portugal,media.flag.portugal,media.map.portugal
+Romania,note.romania,media.flag.romania,media.map.romania
+Russia,note.russia,media.flag.russia,media.map.russia
+San Marino,note.san-marino,media.flag.san-marino,media.map.san-marino
+Serbia,note.serbia,media.flag.serbia,media.map.serbia
+Slovakia,note.slovakia,media.flag.slovakia,media.map.slovakia
+Slovenia,note.slovenia,media.flag.slovenia,media.map.slovenia
+Spain,note.spain,media.flag.spain,media.map.spain
+Sweden,note.sweden,media.flag.sweden,media.map.sweden
+Switzerland,note.switzerland,media.flag.switzerland,media.map.switzerland
+Turkey,note.turkey,media.flag.turkey,media.map.turkey
+Ukraine,note.ukraine,media.flag.ukraine,media.map.ukraine
+Vatican City,note.vatican-city,media.flag.vatican-city,media.map.vatican-city
+Armenia,note.armenia,media.flag.armenia,media.map.armenia
+Cyprus,note.cyprus,media.flag.cyprus,media.map.cyprus
+Kazakhstan,note.kazakhstan,media.flag.kazakhstan,media.map.kazakhstan
+Egypt,note.egypt,media.flag.egypt,media.map.egypt
+Algeria,note.algeria,media.flag.algeria,media.map.algeria
+Angola,note.angola,media.flag.angola,media.map.angola
+Benin,note.benin,media.flag.benin,media.map.benin
+Botswana,note.botswana,media.flag.botswana,media.map.botswana
+Burkina Faso,note.burkina-faso,media.flag.burkina-faso,media.map.burkina-faso
+Cameroon,note.cameroon,media.flag.cameroon,media.map.cameroon
+Burundi,note.burundi,media.flag.burundi,media.map.burundi
+Cape Verde,note.cape-verde,media.flag.cape-verde,media.map.cape-verde
+São Tomé and Príncipe,note.sao-tome-and-principe,media.flag.sao-tome-and-principe,media.map.sao-tome-and-principe
+Central African Republic,note.central-african-republic,media.flag.central-african-republic,media.map.central-african-republic
+Chad,note.chad,media.flag.chad,media.map.chad
+Equatorial Guinea,note.equatorial-guinea,media.flag.equatorial-guinea,media.map.equatorial-guinea
+Kenya,note.kenya,media.flag.kenya,media.map.kenya
+Comoros,note.comoros,media.flag.comoros,media.map.comoros
+Ivory Coast,note.ivory-coast,media.flag.ivory-coast,media.map.ivory-coast
+Democratic Republic of the Congo,note.democratic-republic-of-the-congo,media.flag.democratic-republic-of-the-congo,media.map.democratic-republic-of-the-congo
+Djibouti,note.djibouti,media.flag.djibouti,media.map.djibouti
+Guinea-Bissau,note.guinea-bissau,media.flag.guinea-bissau,media.map.guinea-bissau
+Eritrea,note.eritrea,media.flag.eritrea,media.map.eritrea
+Ethiopia,note.ethiopia,media.flag.ethiopia,media.map.ethiopia
+Gabon,note.gabon,media.flag.gabon,media.map.gabon
+The Gambia,note.the-gambia,media.flag.the-gambia,media.map.the-gambia
+Lesotho,note.lesotho,media.flag.lesotho,media.map.lesotho
+Liberia,note.liberia,media.flag.liberia,media.map.liberia
+Madagascar,note.madagascar,media.flag.madagascar,media.map.madagascar
+Malawi,note.malawi,media.flag.malawi,media.map.malawi
+Mali,note.mali,media.flag.mali,media.map.mali
+Mauritania,note.mauritania,media.flag.mauritania,media.map.mauritania
+Mauritius,note.mauritius,media.flag.mauritius,media.map.mauritius
+Morocco,note.morocco,media.flag.morocco,media.map.morocco
+Mozambique,note.mozambique,media.flag.mozambique,media.map.mozambique
+Namibia,note.namibia,media.flag.namibia,media.map.namibia
+Niger,note.niger,media.flag.niger,media.map.niger
+Nigeria,note.nigeria,media.flag.nigeria,media.map.nigeria
+Republic of the Congo,note.republic-of-the-congo,media.flag.republic-of-the-congo,media.map.republic-of-the-congo
+Rwanda,note.rwanda,media.flag.rwanda,media.map.rwanda
+Senegal,note.senegal,media.flag.senegal,media.map.senegal
+Seychelles,note.seychelles,media.flag.seychelles,media.map.seychelles
+Sierra Leone,note.sierra-leone,media.flag.sierra-leone,media.map.sierra-leone
+South Africa,note.south-africa,media.flag.south-africa,media.map.south-africa
+Sudan,note.sudan,media.flag.sudan,media.map.sudan
+Eswatini,note.eswatini,media.flag.eswatini,media.map.eswatini
+Tanzania,note.tanzania,media.flag.tanzania,media.map.tanzania
+Togo,note.togo,media.flag.togo,media.map.togo
+Tunisia,note.tunisia,media.flag.tunisia,media.map.tunisia
+Uganda,note.uganda,media.flag.uganda,media.map.uganda
+Sahrawi Arab Democratic Republic,note.sahrawi-arab-democratic-republic,media.flag.sahrawi-arab-democratic-republic,media.map.sahrawi-arab-democratic-republic
+Zambia,note.zambia,media.flag.zambia,media.map.zambia
+Zimbabwe,note.zimbabwe,media.flag.zimbabwe,media.map.zimbabwe
+Canary Islands,note.canary-islands,,media.map.canary-islands
+Afghanistan,note.afghanistan,media.flag.afghanistan,media.map.afghanistan
+Bahrain,note.bahrain,media.flag.bahrain,media.map.bahrain
+Bangladesh,note.bangladesh,media.flag.bangladesh,media.map.bangladesh
+Bhutan,note.bhutan,media.flag.bhutan,media.map.bhutan
+Brunei,note.brunei,media.flag.brunei,media.map.brunei
+China,note.china,media.flag.china,media.map.china
+Cambodia,note.cambodia,media.flag.cambodia,media.map.cambodia
+Indonesia,note.indonesia,media.flag.indonesia,media.map.indonesia
+India,note.india,media.flag.india,media.map.india
+Hong Kong,note.hong-kong,media.flag.hong-kong,media.map.hong-kong
+Iran,note.iran,media.flag.iran,media.map.iran
+Israel,note.israel,media.flag.israel,media.map.israel
+Iraq,note.iraq,media.flag.iraq,media.map.iraq
+South Korea,note.south-korea,media.flag.south-korea,media.map.south-korea
+North Korea,note.north-korea,media.flag.north-korea,media.map.north-korea
+Jordan,note.jordan,media.flag.jordan,media.map.jordan
+Japan,note.japan,media.flag.japan,media.map.japan
+Lebanon,note.lebanon,media.flag.lebanon,media.map.lebanon
+Laos,note.laos,media.flag.laos,media.map.laos
+Kyrgyzstan,note.kyrgyzstan,media.flag.kyrgyzstan,media.map.kyrgyzstan
+Kuwait,note.kuwait,media.flag.kuwait,media.map.kuwait
+Myanmar,note.myanmar,media.flag.myanmar,media.map.myanmar
+Mongolia,note.mongolia,media.flag.mongolia,media.map.mongolia
+Maldives,note.maldives,media.flag.maldives,media.map.maldives
+Malaysia,note.malaysia,media.flag.malaysia,media.map.malaysia
+Oman,note.oman,media.flag.oman,media.map.oman
+Nepal,note.nepal,media.flag.nepal-nobox,media.map.nepal
+Palestine,note.palestine,media.flag.palestine,media.map.palestine
+Pakistan,note.pakistan,media.flag.pakistan,media.map.pakistan
+Qatar,note.qatar,media.flag.qatar,media.map.qatar
+Saudi Arabia,note.saudi-arabia,media.flag.saudi-arabia,media.map.saudi-arabia
+Singapore,note.singapore,media.flag.singapore,media.map.singapore
+Syria,note.syria,media.flag.syria,media.map.syria
+Taiwan,note.taiwan,media.flag.taiwan,media.map.taiwan
+Sri Lanka,note.sri-lanka,media.flag.sri-lanka,media.map.sri-lanka
+Tajikistan,note.tajikistan,media.flag.tajikistan,media.map.tajikistan
+Thailand,note.thailand,media.flag.thailand,media.map.thailand
+Timor-Leste,note.timor-leste,media.flag.timor-leste,media.map.timor-leste
+United Arab Emirates,note.united-arab-emirates,media.flag.united-arab-emirates,media.map.united-arab-emirates
+Turkmenistan,note.turkmenistan,media.flag.turkmenistan,media.map.turkmenistan
+Yemen,note.yemen,media.flag.yemen,media.map.yemen
+Vietnam,note.vietnam,media.flag.vietnam,media.map.vietnam
+Uzbekistan,note.uzbekistan,media.flag.uzbekistan,media.map.uzbekistan
+Fiji,note.fiji,media.flag.fiji,media.map.fiji
+Papua New Guinea,note.papua-new-guinea,media.flag.papua-new-guinea,media.map.papua-new-guinea
+Australia,note.australia,media.flag.australia,media.map.australia
+Solomon Islands,note.solomon-islands,media.flag.solomon-islands,media.map.solomon-islands
+Argentina,note.argentina,media.flag.argentina,media.map.argentina
+Bolivia,note.bolivia,media.flag.bolivia.blur|media.flag.bolivia,media.map.bolivia
+Brazil,note.brazil,media.flag.brazil,media.map.brazil
+Chile,note.chile,media.flag.chile,media.map.chile
+Colombia,note.colombia,media.flag.colombia,media.map.colombia
+Ecuador,note.ecuador,media.flag.ecuador,media.map.ecuador
+Guyana,note.guyana,media.flag.guyana,media.map.guyana
+Paraguay,note.paraguay,media.flag.paraguay.blur|media.flag.paraguay,media.map.paraguay
+Peru,note.peru,media.flag.peru,media.map.peru
+Suriname,note.suriname,media.flag.suriname,media.map.suriname
+Uruguay,note.uruguay,media.flag.uruguay,media.map.uruguay
+Venezuela,note.venezuela,media.flag.venezuela,media.map.venezuela
+Cook Islands,note.cook-islands,media.flag.cook-islands,media.map.cook-islands
+Federated States of Micronesia,note.federated-states-of-micronesia,media.flag.federated-states-of-micronesia,media.map.federated-states-of-micronesia
+Guam,note.guam,media.flag.guam.blur|media.flag.guam,media.map.guam
+Vanuatu,note.vanuatu,media.flag.vanuatu,media.map.vanuatu
+Canada,note.canada,media.flag.canada,media.map.canada
+United States of America,note.united-states-of-america,media.flag.united-states-of-america,media.map.united-states-of-america
+Mexico,note.mexico,media.flag.mexico,media.map.mexico
+Puerto Rico,note.puerto-rico,media.flag.puerto-rico,media.map.puerto-rico
+Cuba,note.cuba,media.flag.cuba,media.map.cuba
+Dominican Republic,note.dominican-republic,media.flag.dominican-republic,media.map.dominican-republic
+Haiti,note.haiti,media.flag.haiti,media.map.haiti
+Jamaica,note.jamaica,media.flag.jamaica,media.map.jamaica
+Trinidad and Tobago,note.trinidad-and-tobago,media.flag.trinidad-and-tobago,media.map.trinidad-and-tobago
+Bermuda,note.bermuda,,media.map.bermuda
+Guadeloupe,note.guadeloupe,,media.map.guadeloupe
+The Bahamas,note.the-bahamas,media.flag.the-bahamas,media.map.the-bahamas
+Barbados,note.barbados,media.flag.barbados,media.map.barbados
+Belize,note.belize,media.flag.belize,media.map.belize
+Costa Rica,note.costa-rica,media.flag.costa-rica.blur|media.flag.costa-rica,media.map.costa-rica
+El Salvador,note.el-salvador,media.flag.el-salvador.blur|media.flag.el-salvador,media.map.el-salvador
+Guatemala,note.guatemala,media.flag.guatemala,media.map.guatemala
+Honduras,note.honduras,media.flag.honduras,media.map.honduras
+Nicaragua,note.nicaragua,media.flag.nicaragua.blur|media.flag.nicaragua,media.map.nicaragua
+Panama,note.panama,media.flag.panama,media.map.panama
+Antigua and Barbuda,note.antigua-and-barbuda,media.flag.antigua-and-barbuda,media.map.antigua-and-barbuda
+Dominica,note.dominica,media.flag.dominica,media.map.dominica
+Saint Vincent and the Grenadines,note.saint-vincent-and-the-grenadines,media.flag.saint-vincent-and-the-grenadines,media.map.saint-vincent-and-the-grenadines
+Somalia,note.somalia,media.flag.somalia,media.map.somalia
+Zanzibar,note.zanzibar,,media.map.zanzibar
+Ghana,note.ghana,media.flag.ghana,media.map.ghana
+Guinea,note.guinea,media.flag.guinea,media.map.guinea
+New Zealand,note.new-zealand,media.flag.new-zealand,media.map.new-zealand
+French Polynesia,note.french-polynesia,media.flag.french-polynesia,media.map.french-polynesia
+Philippines,note.philippines,media.flag.philippines,media.map.philippines
+Kosovo,note.kosovo,media.flag.kosovo,media.map.kosovo
+Libya,note.libya,media.flag.libya,media.map.libya
+Palau,note.palau,media.flag.palau,media.map.palau
+Saint Lucia,note.saint-lucia,media.flag.saint-lucia,media.map.saint-lucia
+Bali,note.bali,,media.map.bali
+Grenada,note.grenada,media.flag.grenada,media.map.grenada
+British Virgin Islands,note.british-virgin-islands,,media.map.british-virgin-islands
+Turks and Caicos Islands,note.turks-and-caicos-islands,,media.map.turks-and-caicos-islands
+Cayman Islands,note.cayman-islands,,media.map.cayman-islands
+Anguilla,note.anguilla,,media.map.anguilla
+Azores,note.azores,,media.map.azores
+Curaçao,note.curacao,media.flag.curacao,media.map.curacao
+French Guiana,note.french-guiana,,media.map.french-guiana
+Gibraltar,note.gibraltar,,media.map.gibraltar
+Guernsey,note.guernsey,,media.map.guernsey
+Isle of Man,note.isle-of-man,,media.map.isle-of-man
+Jersey,note.jersey,,media.map.jersey
+Kiribati,note.kiribati,media.flag.kiribati,media.map.kiribati
+Macau,note.macau,media.flag.macau,media.map.macau
+Madeira,note.madeira,,media.map.madeira
+Marshall Islands,note.marshall-islands,media.flag.marshall-islands,media.map.marshall-islands
+Nauru,note.nauru,media.flag.nauru,media.map.nauru
+New Caledonia,note.new-caledonia,media.flag.new-caledonia,media.map.new-caledonia
+Niue,note.niue,media.flag.niue,media.map.niue
+Northern Cyprus,note.northern-cyprus,media.flag.northern-cyprus,media.map.northern-cyprus
+Saint Kitts and Nevis,note.saint-kitts-and-nevis,media.flag.saint-kitts-and-nevis,media.map.saint-kitts-and-nevis
+Samoa,note.samoa,media.flag.samoa,media.map.samoa
+Somaliland,note.somaliland,media.flag.somaliland,media.map.somaliland
+South Sudan,note.south-sudan,media.flag.south-sudan,media.map.south-sudan
+Tuvalu,note.tuvalu,media.flag.tuvalu,media.map.tuvalu
+United States Virgin Islands,note.united-states-virgin-islands,media.flag.united-states-virgin-islands,media.map.united-states-virgin-islands
+Åland Islands,note.aland-islands,media.flag.aland-islands,media.map.aland-islands
+South Ossetia,note.south-ossetia,media.flag.south-ossetia,media.map.south-ossetia
+American Samoa,note.american-samoa,,media.map.american-samoa
+Northern Mariana Islands,note.northern-mariana-islands,,media.map.northern-mariana-islands
+Aruba,note.aruba,media.flag.aruba,media.map.aruba
+Abkhazia,note.abkhazia,media.flag.abkhazia,media.map.abkhazia
+Sint Maarten,note.sint-maarten,,media.map.sint-maarten
+Tonga,note.tonga,media.flag.tonga,media.map.tonga
+Transnistria,note.transnistria,media.flag.transnistria,media.map.transnistria
+Sardinia,note.sardinia,,media.map.sardinia
+Kaliningrad Oblast,note.kaliningrad-oblast,,media.map.kaliningrad-oblast
+Martinique,note.martinique,,media.map.martinique
+Java,note.java,,media.map.java
+Corsica,note.corsica,,media.map.corsica
+European Union,note.european-union,media.flag.european-union,media.map.european-union
+Gulf of Mexico,note.gulf-of-mexico,,media.map.gulf-of-mexico
+Philippine Sea,note.philippine-sea,,media.map.philippine-sea
+Southern Ocean,note.southern-ocean,,media.map.southern-ocean-nobox
+Gulf of Thailand,note.gulf-of-thailand,,media.map.gulf-of-thailand
+Micronesia,note.micronesia,,media.map.micronesia
+Pacific Ocean,note.pacific-ocean,,media.map.pacific-ocean-nobox
+Atlantic Ocean,note.atlantic-ocean,,media.map.atlantic-ocean-nobox
+Indian Ocean,note.indian-ocean,,media.map.indian-ocean-nobox
+Arctic Ocean,note.arctic-ocean,,media.map.arctic-ocean-nobox
+Hudson Bay,note.hudson-bay,,media.map.hudson-bay
+Labrador Sea,note.labrador-sea,,media.map.labrador-sea
+White Sea,note.white-sea,,media.map.white-sea
+Denmark Strait,note.denmark-strait,,media.map.denmark-strait
+Norwegian Sea,note.norwegian-sea,,media.map.norwegian-sea
+Baltic Sea,note.baltic-sea,,media.map.baltic-sea
+Celtic Sea,note.celtic-sea,,media.map.celtic-sea
+English Channel,note.english-channel,,media.map.english-channel
+Adriatic Sea,note.adriatic-sea,,media.map.adriatic-sea
+Bay of Biscay,note.bay-of-biscay,,media.map.bay-of-biscay
+Black Sea,note.black-sea,,media.map.black-sea
+Aegean Sea,note.aegean-sea,,media.map.aegean-sea
+Balkan Peninsula,note.balkan-peninsula,,media.map.balkan-peninsula
+Caspian Sea,note.caspian-sea,,media.map.caspian-sea
+Mediterranean Sea,note.mediterranean-sea,,media.map.mediterranean-sea
+East Siberian Sea,note.east-siberian-sea,,media.map.east-siberian-sea
+Bering Strait,note.bering-strait,,media.map.bering-strait
+Arabian Sea,note.arabian-sea,,media.map.arabian-sea
+Red Sea,note.red-sea,,media.map.red-sea
+Dead Sea,note.dead-sea,,media.map.dead-sea
+Bay of Bengal,note.bay-of-bengal,,media.map.bay-of-bengal
+Sea of Japan,note.sea-of-japan,,media.map.sea-of-japan
+Yellow Sea,note.yellow-sea,,media.map.yellow-sea
+Coral Sea,note.coral-sea,,media.map.coral-sea
+South China Sea,note.south-china-sea,,media.map.south-china-sea
+Tasman Sea,note.tasman-sea,,media.map.tasman-sea
+Gulf of Carpentaria,note.gulf-of-carpentaria,,media.map.gulf-of-carpentaria
+Aral Sea,note.aral-sea,,media.map.aral-sea
+Persian Gulf,note.persian-gulf,,media.map.persian-gulf
+Caribbean Sea,note.caribbean-sea,,media.map.caribbean-sea
+Gulf of California,note.gulf-of-california,,media.map.gulf-of-california
+Polynesia,note.polynesia,,media.map.polynesia
+Melanesia,note.melanesia,,media.map.melanesia
+Scandinavia,note.scandinavia,,media.map.scandinavia
+Sea of Galilee,note.sea-of-galilee,,media.map.sea-of-galilee
+Sumatra,note.sumatra,,media.map.sumatra
+Sicily,note.sicily,,media.map.sicily
+Mayotte,note.mayotte,,media.map.mayotte
+Réunion,note.reunion,,media.map.reunion
+Falkland Islands,note.falkland-islands,,media.map.falkland-islands
+Europe,note.europe,,media.map.europe-nobox
+North America,note.north-america,,media.map.north-america-nobox
+South America,note.south-america,,media.map.south-america-nobox
+Asia,note.asia,,media.map.asia-nobox
+Africa,note.africa,,media.map.africa-nobox
+Oceania,note.oceania,,media.map.oceania-nobox
+Antarctica,note.antarctica,,media.map.antarctica-nobox
+Saint Martin,note.saint-martin,,media.map.saint-martin
+Wallis and Futuna,note.wallis-and-futuna,,media.map.wallis-and-futuna
+Akrotiri and Dhekelia,note.akrotiri-and-dhekelia,,media.map.akrotiri-and-dhekelia
+Svalbard,note.svalbard,,media.map.svalbard
+Hawaii,note.hawaii,,media.map.hawaii
+Alaska,note.alaska,,media.map.alaska
+Bougainville,note.bougainville,,media.map.bougainville
+Jeju,note.jeju,,media.map.jeju
+Banda Sea,note.banda-sea,,media.map.banda-sea
+Barents Sea,note.barents-sea,,media.map.barents-sea
+Celebes Sea,note.celebes-sea,,media.map.celebes-sea
+East China Sea,note.east-china-sea,,media.map.east-china-sea
+Gulf of Alaska,note.gulf-of-alaska,,media.map.gulf-of-alaska
+Gulf of Guinea,note.gulf-of-guinea,,media.map.gulf-of-guinea
+North Sea,note.north-sea,,media.map.north-sea
+Sea of Okhotsk,note.sea-of-okhotsk,,media.map.sea-of-okhotsk
+Timor Sea,note.timor-sea,,media.map.timor-sea
+Strait of Malacca,note.strait-of-malacca,,media.map.strait-of-malacca
+Strait of Hormuz,note.strait-of-hormuz,,media.map.strait-of-hormuz
+Strait of Gibraltar,note.strait-of-gibraltar,,media.map.strait-of-gibraltar
+Gulf of Oman,note.gulf-of-oman,,media.map.gulf-of-oman

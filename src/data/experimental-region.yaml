@@ -1,0 +1,23 @@
+version: 1
+primary_table: ids
+tables:
+  ids:
+    path: ids.csv
+  main:
+    path: main.csv
+parameters: {}
+joins:
+  - left: ids.country
+    right: main.country
+    required: true
+note:
+  id: ids.stable_id
+  note_type_id: note-type.ultimate-geography
+  fields:
+    field.region-code:
+      column: main.region code
+      type: scalar
+  tags:
+    column: main.tags
+    delimiter: ', '
+  adapter_ids: {}
