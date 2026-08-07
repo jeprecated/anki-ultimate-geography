@@ -1,7 +1,8 @@
 archiver/
 build/
 vendor/
-src/note_models/templates/generated/
+__pycache__/
+*.py[cod]
 
 .DS_Store
 Thumbs.db

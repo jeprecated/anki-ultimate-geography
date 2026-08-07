@@ -39,7 +39,7 @@ def get_zip_filename(deck_dir, version):
 def zip_decks(aug_version=None):
     root = Path.cwd()
 
-    build_dir = root / "build"
+    build_dir = root / "build" / "brainbrew" / "crowdanki"
 
     desc_file = root / "src" / "headers" / "desc.html"
     if aug_version is None:

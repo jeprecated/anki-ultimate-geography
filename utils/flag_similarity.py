@@ -3,7 +3,7 @@
 Pass the name of the two countries in lower-case, with underscores
 instead of spaces to the script.
 
-pipenv run utils/flag_similarity.py country_1 country_2
+python utils/flag_similarity.py country_1 country_2
 
 Checks colours and geometries (width:height).  Does not verify that
 the colours are in the same positions or indeed that the flags have
@@ -15,11 +15,11 @@ otherwise the comparison table becomes very long.
 
 Can also find the ΔE* colour difference of two hex-strings:
 
-pipenv run utils/flag_similarity.py colour_1 colour_2
+python utils/flag_similarity.py colour_1 colour_2
 
 e.g.
 
-pipenv run utils/flag_similarity.py '#a00' '#f00'
+python utils/flag_similarity.py '#a00' '#f00'
 
 (We're overloading the basic script invocation, rather than having two
 subcommands (`country`/`colour` `arg_1` `arg_2`), for reduced typing
