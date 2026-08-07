@@ -1,0 +1,37 @@
+id: overlay.translation.es
+kind: translation
+translations:
+  from_csv:
+    - descriptor: src/data/ultimate-geography.yaml
+      parameters:
+        language: es
+      exclude:
+        source_texts: []
+        note_ids: []
+        paths: []
+  variables:
+    label.capital-hint:
+      'Hint: {{Capital hint}}': 'Pista: {{Capital hint}}'
+    label.flag:
+      Flag: Bandera
+    label.location:
+      Location: 'Ubicación'
+    note-type.name:
+      Ultimate Geography: 'Ultimate Geography [ES]'
+    sentence.flag-similar:
+      'Flag similar to {{Flag similarity}}.': 'Bandera similar a {{Flag similarity}}.'
+  adapter_ids:
+    crowdanki:uuid:
+      43c5ba66-9a65-11e8-90c9-a0481cc15658: cb4d32ee-12ed-9960-1841-28c09449ded0
+      43e2586a-9a65-11e8-a777-a0481cc15658: 0bacddfd-1e81-4e62-9152-bdff33db0374
+deck:
+  name:
+    intent: replace
+    value: 'Ultimate Geography [ES]'
+    expected_base:
+      value: Ultimate Geography
+  description:
+    intent: replace
+    value: !include src/headers/desc_es.html
+    expected_base:
+      value: !include src/headers/desc.html

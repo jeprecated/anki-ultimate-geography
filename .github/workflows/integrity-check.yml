@@ -18,20 +18,14 @@ jobs:
         run: |
           pipenv run build
           pipenv run build_experimental
-      - name: Preserve adopted-target oracles
+      - name: Preserve legacy oracles
         run: |
-          mkdir -p build/legacy-adopted
-          cp -a \
-            'build/Ultimate Geography [EN]' \
-            'build/Ultimate Geography [DE]' \
-            'build/Ultimate Geography [EN] [Experimental]' \
-            'build/Ultimate Geography [DE] [Experimental]' \
-            'build/Ultimate Geography [EN] [Extended]' \
-            build/legacy-adopted/
+          mkdir -p build/legacy-all
+          cp -a build/'Ultimate Geography '* build/legacy-all/
       - uses: actions/upload-artifact@v4
         with:
-          name: legacy-adopted
-          path: build/legacy-adopted
+          name: legacy-all
+          path: build/legacy-all
           if-no-files-found: error
 
   rust-shadow:
@@ -55,8 +49,8 @@ jobs:
           test "$(brainbrew --version)" = 'brainbrew 1.0.0-alpha.8'
       - uses: actions/download-artifact@v4
         with:
-          name: legacy-adopted
-          path: build/legacy-adopted
+          name: legacy-all
+          path: build/legacy-all
       - name: Validate adopted Rust targets
         run: |
           export PYTHONDONTWRITEBYTECODE=1
@@ -68,23 +62,25 @@ jobs:
           python migration/brainbrew/stage_media.py stage
           python migration/brainbrew/stage_media.py check
 
-          files='brainbrew.yaml deck.yaml note-types.yaml media.yaml experimental.yaml extended.yaml translation-de.yaml overlays/variants/experimental/de.yaml overlays/variants/experimental/en.yaml overlays/variants/extended/en.yaml'
-          sha256sum $files > /tmp/brainbrew-yaml.sha256
-          for file in $files; do brainbrew fmt "$file"; done
+          files=(brainbrew.yaml deck.yaml note-types.yaml media.yaml experimental.yaml extended.yaml)
+          for file in translation-*.yaml overlays/variants/*/*.yaml; do
+            test ! -e "$file" || files+=("$file")
+          done
+          sha256sum "${files[@]}" > /tmp/brainbrew-yaml.sha256
+          for file in "${files[@]}"; do brainbrew fmt "$file"; done
           sha256sum --check /tmp/brainbrew-yaml.sha256
 
           brainbrew targets --manifest brainbrew.yaml --json > build/brainbrew-targets.json
-          python - <<'PY'
+          python - <<'PY' > build/brainbrew-target-names
           import json
           from pathlib import Path
-          targets = json.loads(Path('build/brainbrew-targets.json').read_text())['targets']
-          assert [target['name'] for target in targets] == [
-              'de-experimental', 'de-standard', 'en-experimental', 'en-extended', 'en-standard'
-          ], targets
+          for target in json.loads(Path('build/brainbrew-targets.json').read_text())['targets']:
+              print(target['name'])
           PY
+          diff -u migration/brainbrew/expected-targets.txt build/brainbrew-target-names
 
-          mkdir -p build/brainbrew
-          for target in de-experimental de-standard en-experimental en-extended en-standard; do
+          mkdir -p build/brainbrew/crowdanki
+          while IFS= read -r target; do
             brainbrew validate --manifest brainbrew.yaml --target "$target"
             brainbrew compose --manifest brainbrew.yaml --target "$target" \
               --out "build/brainbrew/$target.yaml"
@@ -97,14 +93,18 @@ jobs:
             brainbrew export crowdanki --manifest brainbrew.yaml --target "$target" \
               --media-root build/brainbrew-media/standard \
               --out "build/brainbrew/crowdanki/$target"
-            case "$target" in
-              de-experimental) legacy='Ultimate Geography [DE] [Experimental]' ;;
-              de-standard) legacy='Ultimate Geography [DE]' ;;
-              en-experimental) legacy='Ultimate Geography [EN] [Experimental]' ;;
-              en-extended) legacy='Ultimate Geography [EN] [Extended]' ;;
-              en-standard) legacy='Ultimate Geography [EN]' ;;
+
+            language=${target%-*}
+            variant=${target##*-}
+            language=$(printf '%s' "$language" | tr '[:lower:]' '[:upper:]')
+            legacy="Ultimate Geography [$language]"
+            case "$variant" in
+              experimental) legacy="$legacy [Experimental]" ;;
+              extended) legacy="$legacy [Extended]" ;;
+              standard) ;;
+              *) echo "Unknown target variant: $variant" >&2; exit 1 ;;
             esac
             python migration/brainbrew/compare_crowdanki.py \
-              "build/legacy-adopted/$legacy" \
+              "build/legacy-all/$legacy" \
               "build/brainbrew/crowdanki/$target"
-          done
+          done < build/brainbrew-target-names
