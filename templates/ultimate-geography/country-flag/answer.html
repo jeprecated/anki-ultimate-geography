@@ -1,21 +1,8 @@
 <div dir="${text.direction}">
-{{#Flag}}
-  <div class="value value--top">?</div>
-
-  <hr>
-
-  <div class="type">${label.flag}</div>
-  <div class="value value--image value--front">{{Flag}}</div>
-{{/Flag}}
-</div>
-
---
-
-<div dir="${text.direction}">
-<div id=answer class="value value--top">{{Country}}</div>
+<div class="value value--top">{{Country}}</div>
 {{#Country info}}<div class="info">{{Country info}}</div>{{/Country info}}
 
-<hr>
+<hr id=answer>
 
 <div class="type">${label.flag}</div>
 <div class="value value--image value--back">{{Flag}}</div>
