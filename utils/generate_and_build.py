@@ -4,6 +4,16 @@ import subprocess
 from pathlib import Path
 
 
+HTML_TOKENS = {
+    "__CAPITAL_TRANSLATION__": "${label.capital}",
+    "__LOCATION_TRANSLATION__": "${label.location}",
+    "__HINT_TRANSLATION__": "${label.capital-hint}",
+    "__FLAG_TRANSLATION__": "${label.flag}",
+    "__FLAG_SIMILARITY_TRANSLATION__": "${sentence.flag-similar}",
+    "__TEXT_DIRECTION__": "${text.direction}",
+}
+
+
 def validate_subtokens(tokens):
     toks = sorted(tokens, key=len)
     for i, a in enumerate(toks):
@@ -66,7 +76,16 @@ def generate_templates():
 
         for base_path in base_files:
             content = base_path.read_text(encoding="utf-8")
-            rendered = apply_replacements(content, replacements)
+            content_replacements = replacements
+            if base_path.suffix == ".html":
+                content_replacements = [
+                    (
+                        HTML_TOKENS.get(name, name),
+                        value + "{{Capital hint}}" if name == "__HINT_TRANSLATION__" else value,
+                    )
+                    for name, value in replacements
+                ]
+            rendered = apply_replacements(content, content_replacements)
             rendered = apply_replacements(rendered, english_base_case)
 
             output_name = apply_replacements(base_path.name, replacements)

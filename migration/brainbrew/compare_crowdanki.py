@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Compare two CrowdAnki export directories without serializer-order noise."""
+"""Compare CrowdAnki exports, normalizing unordered notes and media declarations."""
 
 import argparse
 import hashlib
@@ -34,6 +34,25 @@ def _unique_object(pairs):
     return result
 
 
+def normalize_notes(deck, label):
+    notes = deck.get("notes")
+    if not isinstance(notes, list):
+        raise InputError(f"{label}: notes must be a list")
+    guids = []
+    for index, note in enumerate(notes):
+        if not isinstance(note, dict):
+            raise InputError(f"{label}: notes[{index}] must be an object")
+        guid = note.get("guid")
+        if not isinstance(guid, str) or not guid:
+            raise InputError(f"{label}: notes[{index}].guid must be a non-empty string")
+        guids.append(guid)
+    if len(guids) != len(set(guids)):
+        raise InputError(f"{label}: notes contains duplicate GUIDs")
+    normalized = dict(deck)
+    normalized["notes"] = sorted(notes, key=lambda note: note["guid"])
+    return normalized
+
+
 def load_target(root, label):
     if not root.is_dir():
         raise InputError(f"{label}: target directory is missing")
@@ -51,6 +70,7 @@ def load_target(root, label):
         raise InputError(f"{label}: invalid deck.json: {error}") from error
     if not isinstance(deck, dict):
         raise InputError(f"{label}: deck.json must contain a top-level object")
+    normalized_deck = normalize_notes(deck, label)
 
     declared = deck.get("media_files")
     if not isinstance(declared, list) or any(type(name) is not str for name in declared):
@@ -61,6 +81,7 @@ def load_target(root, label):
         path = PurePosixPath(name)
         if not name or path.is_absolute() or ".." in path.parts or "\\" in name:
             raise InputError(f"{label}: unsafe media filename {name!r}")
+    normalized_deck["media_files"] = sorted(declared)
 
     media_root = root / "media"
     if not media_root.is_dir():
@@ -92,11 +113,19 @@ def load_target(root, label):
         tree_digest.update(b"\0")
         tree_digest.update(bytes.fromhex(digest))
     return {
-        "deck": deck,
+        "deck": normalized_deck,
         "deck_size": len(raw),
         "deck_sha256": hashlib.sha256(raw).hexdigest(),
         "canonical_sha256": hashlib.sha256(
             json.dumps(deck, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode("utf-8")
+        ).hexdigest(),
+        "semantic_sha256": hashlib.sha256(
+            json.dumps(
+                normalized_deck,
+                ensure_ascii=False,
+                sort_keys=True,
+                separators=(",", ":"),
+            ).encode("utf-8")
         ).hexdigest(),
         "media": media,
         "media_tree_sha256": tree_digest.hexdigest(),
@@ -148,8 +177,12 @@ def compare(legacy, candidate):
         f"{'identical' if legacy['deck_sha256'] == candidate['deck_sha256'] else 'different'}"
     )
     print(
-        f"canonical JSON sha256: legacy={legacy['canonical_sha256']}; "
+        f"canonical JSON sha256 (original note order): legacy={legacy['canonical_sha256']}; "
         f"candidate={candidate['canonical_sha256']}"
+    )
+    print(
+        f"semantic JSON sha256 (notes by GUID, media_files by filename): legacy={legacy['semantic_sha256']}; "
+        f"candidate={candidate['semantic_sha256']}"
     )
 
     legacy_media = legacy["media"]

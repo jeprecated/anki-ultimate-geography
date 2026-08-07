@@ -1,24 +1,24 @@
-<div dir="__TEXT_DIRECTION__">
+<div dir="${text.direction}">
 {{#Capital}}
   <div class="value value--top">{{Country}}</div>
   {{#Country info}}<div class="info">{{Country info}}</div>{{/Country info}}
 
   <hr>
 
-  <div class="type">__CAPITAL_TRANSLATION__</div>
+  <div class="type">${label.capital}</div>
   <div class="value">?</div>
 {{/Capital}}
 </div>
 
 --
 
-<div dir="__TEXT_DIRECTION__">
+<div dir="${text.direction}">
 <div class="value value--top">{{Country}}</div>
 {{#Country info}}<div class="info">{{Country info}}</div>{{/Country info}}
 
 <hr id=answer>
 
-<div class="type">__CAPITAL_TRANSLATION__</div>
+<div class="type">${label.capital}</div>
 <div class="value">{{Capital}}</div>
 {{#Capital info}}<div class="info">{{Capital info}}</div>{{/Capital info}}
 </div>

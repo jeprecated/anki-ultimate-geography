@@ -1,10 +1,10 @@
-<div dir="__TEXT_DIRECTION__">
+<div dir="${text.direction}">
 {{#Map}}
   <div class="value value--top">{{Country}}</div>
 
   <hr>
 
-  <div class="type">__LOCATION_TRANSLATION__</div>
+  <div class="type">${label.location}</div>
   <div class="value value--image">
     <svg
       class="placeholder"
@@ -21,12 +21,12 @@
 
 --
 
-<div dir="__TEXT_DIRECTION__">
+<div dir="${text.direction}">
 <div class="value value--top">{{Country}}</div>
 {{#Country info}}<div class="info">{{Country info}}</div>{{/Country info}}
 
 <hr id=answer>
 
-<div class="type">__LOCATION_TRANSLATION__</div>
+<div class="type">${label.location}</div>
 <div class="value value--image">{{Map}}</div>
 </div>

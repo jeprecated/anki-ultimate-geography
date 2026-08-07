@@ -1,0 +1,15 @@
+deck:
+  id: deck.ultimate-geography
+  name: Ultimate Geography
+  description: !include src/headers/desc.html
+  adapter_ids:
+    crowdanki:deck_config_name: Ultimate Geography
+    crowdanki:deck_config_uuid: 43d37fac-9a65-11e8-9cc5-a0481cc15658
+    crowdanki:uuid: 43c5ba66-9a65-11e8-90c9-a0481cc15658
+note_types: !include note-types.yaml
+notes: !csv
+  descriptor: src/data/ultimate-geography.yaml
+  parameters:
+    language: ''
+media: !include media.yaml
+tombstones: []

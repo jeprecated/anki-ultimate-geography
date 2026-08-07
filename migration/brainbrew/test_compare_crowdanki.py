@@ -66,6 +66,71 @@ class CompareCrowdAnkiTests(unittest.TestCase):
         self.assertIn("different", result.stdout)
         self.assertIn("Parity: equal", result.stdout)
 
+    def test_top_level_note_order_is_normalized_by_guid(self):
+        candidate = copy.deepcopy(self.deck)
+        candidate["notes"].append(
+            {"guid": "another-guid", "fields": ["Germany", "Berlin"], "tags": ["country", "eu"]}
+        )
+        legacy = copy.deepcopy(candidate)
+        candidate["notes"].reverse()
+        self.write_target("legacy", legacy)
+        self.write_target("candidate", candidate)
+
+        result = self.run_compare()
+
+        self.assertEqual(result.returncode, 0, result.stdout)
+        self.assertIn("semantic JSON sha256 (notes by GUID, media_files by filename)", result.stdout)
+        self.assertIn("Parity: equal", result.stdout)
+
+    def test_media_file_order_is_normalized_by_filename(self):
+        legacy = copy.deepcopy(self.deck)
+        legacy["media_files"].append("map.svg")
+        candidate = copy.deepcopy(legacy)
+        candidate["media_files"].reverse()
+        self.write_target("legacy", legacy)
+        self.write_target("candidate", candidate)
+
+        result = self.run_compare()
+
+        self.assertEqual(result.returncode, 0, result.stdout)
+        self.assertIn("Parity: equal", result.stdout)
+
+    def test_other_list_order_remains_strict(self):
+        cases = [
+            (
+                "fields",
+                lambda deck: deck["notes"][0]["fields"].reverse(),
+                "$.notes[0].fields[0]",
+            ),
+            (
+                "tags",
+                lambda deck: deck["notes"][0]["tags"].reverse(),
+                "$.notes[0].tags[0]",
+            ),
+            (
+                "card templates",
+                lambda deck: deck["note_models"][0]["tmpls"].reverse(),
+                "$.note_models[0].tmpls[0].name",
+            ),
+            (
+                "generic list",
+                lambda deck: deck["deck_configurations"][0]["new"]["delays"].reverse(),
+                "$.deck_configurations[0].new.delays[0]",
+            ),
+        ]
+        for label, mutate, expected_path in cases:
+            with self.subTest(label=label):
+                changed = copy.deepcopy(self.deck)
+                changed["note_models"][0]["tmpls"] = [{"name": "first"}, {"name": "second"}]
+                changed["deck_configurations"][0]["new"]["delays"] = [1, 10]
+                self.write_target("legacy", changed)
+                candidate = copy.deepcopy(changed)
+                mutate(candidate)
+                self.write_target("candidate", candidate)
+                result = self.run_compare()
+                self.assertEqual(result.returncode, 1, result.stdout)
+                self.assertIn(expected_path, result.stdout)
+
     def test_semantic_identity_surfaces_fail_with_paths(self):
         changes = [
             ("guid", lambda deck: deck["notes"][0].update(guid="changed"), "$.notes[0].guid"),
@@ -98,6 +163,11 @@ class CompareCrowdAnkiTests(unittest.TestCase):
 
         self.write_target("duplicate", self.deck, raw='{"media_files":[],"media_files":[]}')
         cases.append(("duplicate key", "legacy", "duplicate", "duplicate JSON key"))
+
+        duplicate_guid = copy.deepcopy(self.deck)
+        duplicate_guid["notes"].append(copy.deepcopy(duplicate_guid["notes"][0]))
+        self.write_target("duplicate-guid", duplicate_guid)
+        cases.append(("duplicate GUID", "legacy", "duplicate-guid", "notes contains duplicate GUIDs"))
 
         self.write_target("no-media", self.deck, media=False)
         cases.append(("media directory", "legacy", "no-media", "media directory is missing"))
